@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { profile } from "@/data/profile";
 import { Frame } from "../Frame";
+import { TabHeader } from "../TabHeader";
 import { ContactComposer } from "../ContactComposer";
 
 export function AboutTab() {
@@ -17,12 +18,7 @@ export function AboutTab() {
           />
         </div>
       </Frame>
-      <h2
-        tabIndex={-1}
-        className="caps text-center text-sm font-semibold tracking-[0.2em] text-ink"
-      >
-        Who is {profile.name}
-      </h2>
+      <TabHeader id="about" cmd="cat about.md" title={`Who is ${profile.name}`} />
 
       <div className="mt-8 space-y-8">
         {profile.bio.map((b) => (

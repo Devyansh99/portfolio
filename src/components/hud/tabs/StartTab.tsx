@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import type { PointerEvent } from "react";
+import { banners } from "@/data/banners";
 import { profile } from "@/data/profile";
 import { useDeviceTier, useWebGL2 } from "@/lib/capabilities";
 import { Frame } from "../Frame";
@@ -90,14 +91,17 @@ export function StartTab({ active }: { active: boolean }) {
       )}
 
       <div className="relative flex h-full flex-col items-center justify-between px-5 py-8 text-center">
-        <div>
+        <div className="@container w-full">
+          <pre aria-hidden className="ascii mx-auto hidden w-fit text-left @xl:block">
+            {banners.start}
+          </pre>
           <h1
             tabIndex={-1}
-            className="caps text-3xl font-bold tracking-wide text-ink sm:text-5xl"
+            className="text-3xl font-bold tracking-tight text-ink sm:text-5xl @xl:sr-only"
           >
-            {profile.name}
+            {profile.name.toLowerCase()}
           </h1>
-          <p className="tag mt-1">AI engineer · CS &amp; AI, Plaksha</p>
+          <p className="tag mt-2">ai engineer · cs &amp; ai, plaksha</p>
           <Tagline />
         </div>
 
@@ -129,8 +133,8 @@ export function StartTab({ active }: { active: boolean }) {
           </dl>
         </div>
 
-        <p className="tag hidden lg:block">
-          press 1–6 to jump · press / for commands · move your cursor over the sphere
+        <p className="cursor tag hidden lg:block">
+          boot ok · press 1-6 to jump · / for commands · move your cursor over the sphere
         </p>
       </div>
     </div>

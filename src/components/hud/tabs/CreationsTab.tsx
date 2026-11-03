@@ -6,6 +6,7 @@ import { projects, type Project } from "@/data/projects";
 import { projectCodes } from "@/data/codes";
 import { privateNote } from "@/data/copy";
 import { Frame } from "../Frame";
+import { TabHeader } from "../TabHeader";
 
 const statusTone: Record<Project["status"], string> = {
   live: "text-mint",
@@ -60,13 +61,10 @@ export function CreationsTab({ active }: { active: boolean }) {
   };
 
   return (
-    <div className="relative flex h-full flex-col items-center justify-center px-4 py-6">
-      <h2
-        tabIndex={-1}
-        className="caps mb-2 text-sm font-semibold tracking-[0.2em] text-ink"
-      >
-        Creations
-      </h2>
+    <div className="relative flex h-full flex-col items-center px-4 py-6">
+      <div className="mb-2 w-full max-w-4xl">
+        <TabHeader id="creations" cmd="ls creations/" title="Seven projects, tap a card for details." />
+      </div>
 
       <div
         className="relative flex w-full flex-1 items-center justify-center overflow-x-clip [perspective:1200px]"
@@ -223,21 +221,21 @@ export function CreationsTab({ active }: { active: boolean }) {
 
             <p className="mt-4 text-lg leading-snug text-ink">{open.what}</p>
 
-            <h4 className="tag mt-8 text-mint">What it does</h4>
+            <h4 className="tag hash mt-8 text-mint">What it does</h4>
             <div className="mt-2 space-y-3 text-[15px] leading-relaxed text-ink/85">
               {open.does.map((p) => (
                 <p key={p}>{p}</p>
               ))}
             </div>
 
-            <h4 className="tag mt-8 text-mint">How it works</h4>
+            <h4 className="tag hash mt-8 text-mint">How it works</h4>
             <p className="mt-2 text-[15px] leading-relaxed text-ink/85">
               {open.how}
             </p>
 
             {open.metrics.length > 0 && (
               <>
-                <h4 className="tag mt-8 text-mint">By the numbers</h4>
+                <h4 className="tag hash mt-8 text-mint">By the numbers</h4>
                 <dl className="mt-2 grid grid-cols-2 gap-3 sm:grid-cols-4">
                   {open.metrics.map((m) => (
                     <div
@@ -254,7 +252,7 @@ export function CreationsTab({ active }: { active: boolean }) {
               </>
             )}
 
-            <h4 className="tag mt-8 text-mint">Built with</h4>
+            <h4 className="tag hash mt-8 text-mint">Built with</h4>
             <ul className="mt-2 flex flex-wrap gap-2">
               {open.stack.map((s) => (
                 <li

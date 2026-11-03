@@ -10,7 +10,7 @@ function Field({ label, value }: { label: string; value: string }) {
   return (
     <div>
       <p className="tag">{label}</p>
-      <p className="caps mt-1 text-lg font-semibold leading-tight text-mint">
+      <p className="caps mt-0.5 text-base font-semibold leading-tight text-mint">
         {value}
       </p>
     </div>
@@ -23,7 +23,7 @@ export function LeftPanel({ className = "" }: { className?: string }) {
 
   return (
     <aside className={`flex-col gap-4 xl:gap-5 ${className}`}>
-      <Frame className="aspect-square w-full max-w-[30vh] shrink-0 bg-surface">
+      <Frame title="devyansh.jpg" className="aspect-square w-full max-w-[30vh] shrink-0 bg-surface">
         <div className="absolute inset-2 overflow-hidden">
           <Image
             src="/devyansh.jpg"
@@ -40,12 +40,12 @@ export function LeftPanel({ className = "" }: { className?: string }) {
         </div>
       </Frame>
 
-      <Field label="Name" value={profile.name} />
-      <Field label="Occupation" value={profile.occupation} />
-      <Field label="Corporation" value={profile.corporation} />
+      <Field label="name" value={profile.name} />
+      <Field label="role" value={profile.occupation} />
+      <Field label="org" value={profile.corporation} />
 
       <div>
-        <p className="tag">Status</p>
+        <p className="tag">status</p>
         <p className="caps mt-1 flex items-center gap-2 border border-mint/40 bg-mint/10 px-2 py-1.5 text-sm font-semibold text-mint">
           <span aria-hidden className="size-2 shrink-0 animate-pulse rounded-full bg-mint" />
           {profile.status}
@@ -53,7 +53,7 @@ export function LeftPanel({ className = "" }: { className?: string }) {
       </div>
 
       <div>
-        <p className="tag">Email</p>
+        <p className="tag">email</p>
         <p className="mt-1 select-all break-all font-mono text-[13px] text-ink">
           {profile.email}
         </p>
@@ -77,7 +77,7 @@ export function LeftPanel({ className = "" }: { className?: string }) {
       </div>
 
       <div>
-        <p className="tag">Social</p>
+        <p className="tag">links</p>
         <button
           type="button"
           aria-expanded={open}

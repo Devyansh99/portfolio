@@ -4,26 +4,23 @@ import { projects } from "@/data/projects";
 import { profile } from "@/data/profile";
 import { LocalTime } from "./LocalTime";
 
-const pad = (n: number) => String(n).padStart(2, "0");
-
 type TopBarProps = {
+  tab: string;
   className?: string;
   onOpenPalette: () => void;
 };
 
-export function TopBar({ className = "", onOpenPalette }: TopBarProps) {
+export function TopBar({ tab, className = "", onOpenPalette }: TopBarProps) {
   return (
     <header className={`flex items-center justify-between gap-4 ${className}`}>
-      <div className="flex items-baseline gap-5">
-        <p className="caps text-2xl font-bold leading-none text-mint">
-          {pad(projects.length)}
-          <span className="ml-2 text-xs font-medium text-muted">projects</span>
-        </p>
-        <p className="caps text-2xl font-bold leading-none text-mint">
-          {pad(1)}
-          <span className="ml-2 text-xs font-medium text-muted">paper</span>
-        </p>
-      </div>
+      <p className="min-w-0 truncate font-mono text-sm">
+        <span className="text-mint">devyansh@plaksha</span>
+        <span className="text-muted">:~/{tab}$</span>
+        <span className="cursor" />
+        <span className="ml-4 hidden text-xs text-muted md:inline">
+          {projects.length} projects · 1 paper
+        </span>
+      </p>
       <div className="tag flex items-center gap-3 text-right sm:gap-4">
         <button
           type="button"

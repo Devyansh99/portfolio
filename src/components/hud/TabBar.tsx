@@ -38,7 +38,7 @@ export function TabBar({ tab, onSelect, className = "" }: TabBarProps) {
     <nav
       ref={ref}
       aria-label="Sections"
-      className={`hud-scroll flex gap-1.5 overflow-x-auto pb-1 [mask-image:linear-gradient(to_right,#000_88%,transparent)] lg:grid lg:grid-cols-6 lg:overflow-visible lg:[mask-image:none] ${className}`}
+      className={`hud-scroll flex gap-1 overflow-x-auto border-t border-line pt-2 [mask-image:linear-gradient(to_right,#000_88%,transparent)] lg:grid lg:grid-cols-6 lg:overflow-visible lg:[mask-image:none] ${className}`}
     >
       {tabs.map((t, i) => {
         const active = t.id === tab;
@@ -48,28 +48,21 @@ export function TabBar({ tab, onSelect, className = "" }: TabBarProps) {
             type="button"
             aria-current={active ? "page" : undefined}
             onClick={() => onSelect(t.id)}
-            className={`group min-h-11 min-w-[6.75rem] flex-1 border-b-2 px-3 py-2 text-left transition-colors lg:min-w-0 ${
+            className={`group min-h-11 min-w-[7rem] flex-1 px-3 py-1.5 text-left font-mono transition-colors lg:min-w-0 ${
               active
-                ? "tab-sliver border-mint bg-mint text-bg"
-                : "border-line bg-surface hover:border-mint/60"
+                ? "bg-mint text-bg"
+                : "bg-surface text-muted hover:bg-surface-2 hover:text-mint"
             }`}
           >
-            <span
-              className={`caps block truncate text-sm font-bold leading-tight xl:text-base ${
-                active ? "text-bg" : "text-ink group-hover:text-mint"
-              }`}
-            >
-              <span className={`mr-1.5 text-xs ${active ? "text-bg/60" : "text-mint/70"}`}>
-                {i + 1}
-              </span>
-              {t.label}
+            <span className="block truncate text-xs font-bold leading-tight xl:text-sm">
+              [{i + 1}:{t.id}]
             </span>
             <span
-              className={`mt-0.5 hidden truncate text-[11px] uppercase tracking-wider xl:block ${
+              className={`mt-0.5 hidden truncate text-[11px] xl:block ${
                 active ? "text-bg/70" : "text-muted"
               }`}
             >
-              {t.sub}
+              {t.sub.toLowerCase()}
             </span>
           </button>
         );

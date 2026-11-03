@@ -96,13 +96,14 @@ export function Hud() {
       <div className="hud-glow pointer-events-none absolute inset-0" aria-hidden />
       <div className="relative mx-auto grid h-full max-w-[1920px] grid-rows-[auto_minmax(0,1fr)_auto] gap-3 p-3 sm:p-4 lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-x-6 lg:gap-y-4 lg:p-6 xl:grid-cols-[15rem_minmax(0,1fr)]">
         <TopBar
+          tab={tab}
           className="lg:col-span-2"
           onOpenPalette={() => setPaletteOpen(true)}
         />
-        <LeftPanel className="hud-scroll hidden min-h-0 overflow-y-auto pr-1 lg:flex" />
+        <LeftPanel className="hud-scroll hidden min-h-0 overflow-y-auto pr-1 pt-3 lg:flex" />
 
         <main className="min-h-0">
-          <Frame className="h-full border border-mint/15 bg-bg/60 backdrop-blur-[2px]">
+          <Frame title={`~/${tab}`} className="h-full bg-bg/60 backdrop-blur-[2px]">
             <div
               ref={barRef}
               aria-hidden

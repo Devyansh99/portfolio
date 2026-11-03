@@ -6,6 +6,7 @@ import { skillGroups, skillUsage } from "@/data/skills";
 import { achievements } from "@/data/timeline";
 import { projectCodes as codes } from "@/data/codes";
 import { SkillGlyph } from "../SkillGlyph";
+import { TabHeader } from "../TabHeader";
 
 const titleOf = (id: string) => projects.find((p) => p.id === id)?.title ?? id;
 
@@ -36,12 +37,7 @@ export function SkillsTab() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 font-mono text-sm sm:px-8">
-      <h2
-        tabIndex={-1}
-        className="caps text-center text-sm font-semibold tracking-[0.2em] text-ink"
-      >
-        Skill matrix loaded.
-      </h2>
+      <TabHeader id="skills" cmd="cat skills.md" title="Skill matrix loaded." />
       <p className="mb-5 mt-4 h-[4.5rem] overflow-hidden text-mint" aria-live="polite">
         {"> "}
         {readout}
@@ -141,14 +137,16 @@ export function SkillsTab() {
                           aria-hidden
                         >
                           <span
-                            className={`size-3.5 rounded-[3px] border transition-colors duration-100 ${
+                            className={`text-sm leading-none transition-colors duration-100 ${
                               used
                                 ? hot
-                                  ? "border-mint bg-mint shadow-[0_0_10px_rgba(61,255,176,0.6)]"
-                                  : "border-mint/30 bg-mint/20"
-                                : "border-line bg-surface-2"
+                                  ? "text-mint [text-shadow:0_0_8px_rgba(61,255,176,0.7)]"
+                                  : "text-mint/35"
+                                : "text-line"
                             }`}
-                          />
+                          >
+                            {used ? "■" : "·"}
+                          </span>
                         </span>
                       );
                     })}

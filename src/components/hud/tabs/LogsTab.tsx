@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { TabHeader } from "../TabHeader";
 import { timeline, type TimelineEntry } from "@/data/timeline";
 
 type Lane = {
@@ -60,15 +61,7 @@ export function LogsTab() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 font-mono text-sm sm:px-8">
-      <h2
-        tabIndex={-1}
-        className="caps text-center text-sm font-semibold tracking-[0.2em] text-ink"
-      >
-        Data log dump initialized.
-      </h2>
-      <p className="mt-2 text-center text-xs text-muted">
-        <span className="text-mint">$</span> git log --graph --all
-      </p>
+      <TabHeader id="logs" cmd="git log --graph --all" title="Data log dump initialized." />
 
       <p className="mb-6 mt-6 flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted">
         {lanes

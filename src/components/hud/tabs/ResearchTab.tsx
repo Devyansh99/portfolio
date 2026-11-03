@@ -1,16 +1,12 @@
 import { paper } from "@/data/research";
+import { TabHeader } from "../TabHeader";
 
 export function ResearchTab() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-8">
-      <h2
-        tabIndex={-1}
-        className="caps text-center text-sm font-semibold tracking-[0.2em] text-ink"
-      >
-        Research
-      </h2>
+      <TabHeader id="research" cmd="less paper.pdf" title="One paper, under review." />
 
-      <span className="caps mt-6 inline-flex items-center gap-2 border border-amber/60 bg-amber/10 px-3 py-1 text-sm font-bold text-amber">
+      <span className="caps inline-flex items-center gap-2 border border-amber/60 bg-amber/10 px-3 py-1 text-sm font-bold text-amber">
         <span className="size-2 rounded-full bg-amber" aria-hidden />
         {paper.status}
       </span>
@@ -34,7 +30,7 @@ export function ResearchTab() {
       <p className="mt-2 text-xs leading-relaxed text-muted">{paper.venue}</p>
 
       <section className="mt-10">
-        <h4 className="tag text-mint">In plain words</h4>
+        <h4 className="tag hash text-mint">In plain words</h4>
         <div className="mt-3 grid gap-px border border-line bg-line xl:grid-cols-3">
           {paper.plain.map((p) => (
             <div key={p.label} className="bg-surface p-5">
@@ -48,7 +44,7 @@ export function ResearchTab() {
       </section>
 
       <section className="mt-10">
-        <h4 className="tag text-mint">How a drive becomes a report</h4>
+        <h4 className="tag hash text-mint">How a drive becomes a report</h4>
         <ol className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {paper.pipeline.map((s, i) => (
             <li
@@ -67,9 +63,9 @@ export function ResearchTab() {
               {i % 3 !== 2 && i < paper.pipeline.length - 1 && (
                 <span
                   aria-hidden
-                  className="absolute -right-2.5 top-1/2 z-10 hidden -translate-y-1/2 bg-bg px-0.5 font-mono text-mint lg:block"
+                  className="absolute -right-3 top-1/2 z-10 hidden -translate-y-1/2 bg-bg font-mono text-xs text-mint lg:block"
                 >
-                  →
+                  ─▶
                 </span>
               )}
             </li>
