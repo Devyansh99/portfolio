@@ -2,15 +2,15 @@
 
 import dynamic from "next/dynamic";
 import { useRef } from "react";
+import type { PointerEvent } from "react";
 import { profile } from "@/data/profile";
 import { useWebGL2 } from "@/lib/capabilities";
-import { useSetting } from "@/lib/settings";
 
 const HeroScene = dynamic(() => import("../../HeroScene"), { ssr: false });
 
 const ticks = Array.from({ length: 48 }, (_, i) => i);
 
-function Rings({ spin }: { spin: boolean }) {
+function Rings() {
   return (
     <div
       aria-hidden
@@ -18,7 +18,7 @@ function Rings({ spin }: { spin: boolean }) {
     >
       <svg
         viewBox="-100 -100 200 200"
-        className={`absolute inset-0 ${spin ? "animate-[spin_60s_linear_infinite]" : ""}`}
+        className="absolute inset-0 animate-[spin_60s_linear_infinite]"
       >
         <circle r="96" fill="none" stroke="var(--mint)" strokeOpacity="0.25" strokeDasharray="2 6" />
         {ticks.map((i) => (
@@ -36,9 +36,7 @@ function Rings({ spin }: { spin: boolean }) {
       </svg>
       <svg
         viewBox="-100 -100 200 200"
-        className={`absolute inset-[9%] ${
-          spin ? "animate-[spin_40s_linear_infinite] [animation-direction:reverse]" : ""
-        }`}
+        className="absolute inset-[9%] animate-[spin_40s_linear_infinite] [animation-direction:reverse]"
       >
         <circle r="96" fill="none" stroke="var(--amber)" strokeOpacity="0.35" strokeDasharray="30 12 4 12" />
         <circle cx="0" cy="-96" r="2.5" fill="var(--amber)" />
@@ -48,17 +46,31 @@ function Rings({ spin }: { spin: boolean }) {
 }
 
 export function StartTab() {
-  const ref = useRef<HTMLDivElement>(null);
   const gl = useWebGL2();
-  const motion = useSetting("motion");
+  const pointer = useRef({ x: 0, y: 0 });
+
+  const onMove = (e: PointerEvent<HTMLDivElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    pointer.current.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+    pointer.current.y = -(((e.clientY - r.top) / r.height) * 2 - 1);
+  };
+
+  const onLeave = () => {
+    pointer.current.x = 0;
+    pointer.current.y = 0;
+  };
 
   return (
-    <div ref={ref} className="relative h-full min-h-[26rem] overflow-hidden">
+    <div
+      onPointerMove={onMove}
+      onPointerLeave={onLeave}
+      className="relative h-full min-h-[26rem] overflow-hidden"
+    >
       <div className="bg-grid absolute inset-0" aria-hidden />
-      <Rings spin={motion} />
+      <Rings />
       {gl && (
         <div className="absolute inset-0" aria-hidden>
-          <HeroScene eventSource={ref} animate={motion} />
+          <HeroScene pointer={pointer} />
         </div>
       )}
 
@@ -83,11 +95,7 @@ export function StartTab() {
           </dl>
         </div>
 
-        <p className="tag">
-          {motion
-            ? "press 1–6 to jump · move your cursor over the sphere"
-            : "press 1–6 to jump · motion is off, switch it on at the bottom right"}
-        </p>
+        <p className="tag">press 1–6 to jump · move your cursor over the sphere</p>
       </div>
     </div>
   );

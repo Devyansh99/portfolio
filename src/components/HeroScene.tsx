@@ -6,7 +6,9 @@ import type { RefObject } from "react";
 import * as THREE from "three";
 import { mulberry32 } from "@/lib/rng";
 
-function Network({ animate }: { animate: boolean }) {
+type Pointer = { x: number; y: number };
+
+function Network({ pointer }: { pointer: RefObject<Pointer> }) {
   const group = useRef<THREE.Group>(null);
   const inner = useRef<THREE.Mesh>(null);
   const spin = useRef(0.6);
@@ -28,35 +30,30 @@ function Network({ animate }: { animate: boolean }) {
   }, []);
 
   useFrame((state, delta) => {
-    if (!animate) return;
     const g = group.current;
     if (g) {
       spin.current += delta * 0.08;
-      const { pointer, viewport } = state;
+      const p = pointer.current;
+      const { viewport } = state;
       g.position.x = THREE.MathUtils.damp(
         g.position.x,
-        pointer.x * viewport.width * 0.22,
+        p.x * viewport.width * 0.2,
         4,
         delta,
       );
       g.position.y = THREE.MathUtils.damp(
         g.position.y,
-        pointer.y * viewport.height * 0.22,
+        p.y * viewport.height * 0.2,
         4,
         delta,
       );
       g.rotation.y = THREE.MathUtils.damp(
         g.rotation.y,
-        spin.current + pointer.x * 0.7,
+        spin.current + p.x * 0.7,
         4,
         delta,
       );
-      g.rotation.x = THREE.MathUtils.damp(
-        g.rotation.x,
-        -pointer.y * 0.6,
-        4,
-        delta,
-      );
+      g.rotation.x = THREE.MathUtils.damp(g.rotation.x, -p.y * 0.6, 4, delta);
     }
     const m = inner.current;
     if (m) {
@@ -93,22 +90,14 @@ function Network({ animate }: { animate: boolean }) {
   );
 }
 
-type HeroSceneProps = {
-  eventSource: RefObject<HTMLElement | null>;
-  animate: boolean;
-};
-
-export default function HeroScene({ eventSource, animate }: HeroSceneProps) {
+export default function HeroScene({ pointer }: { pointer: RefObject<Pointer> }) {
   return (
     <Canvas
-      frameloop={animate ? "always" : "demand"}
       dpr={[1, 1.5]}
       camera={{ position: [0, 0, 6], fov: 50 }}
       gl={{ antialias: false, powerPreference: "low-power" }}
-      eventSource={eventSource as RefObject<HTMLElement>}
-      eventPrefix="client"
     >
-      <Network animate={animate} />
+      <Network pointer={pointer} />
     </Canvas>
   );
 }

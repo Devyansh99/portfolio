@@ -6,7 +6,7 @@ export const profile = {
   school: "Plaksha University",
   location: "Mohali, India",
   tagline:
-    "I build AI systems for messy, real-world data. Lately that means teaching a phone to notice a pothole before it starts recording.",
+    "I build AI systems that work on messy, real-world data, from road sensors and school textbooks to spreadsheets and handwriting.",
   bio: [
     {
       label: "The short version",

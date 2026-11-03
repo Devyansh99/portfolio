@@ -21,9 +21,9 @@ export function LeftPanel({ className = "" }: { className?: string }) {
 
   return (
     <aside className={`flex-col gap-5 ${className}`}>
-      <Frame className="aspect-square w-full bg-surface">
+      <Frame className="aspect-[4/3] w-full shrink-0 bg-surface">
         <div className="absolute inset-2 flex items-center justify-center overflow-hidden bg-gradient-to-br from-mint/15 via-transparent to-amber/10">
-          <span className="caps text-6xl font-bold text-mint/90">DA</span>
+          <span className="caps text-5xl font-bold text-mint/90">DA</span>
           <span
             aria-hidden
             className="absolute inset-x-0 top-1/2 h-px bg-mint/30"

@@ -2,10 +2,8 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useSyncExternalStore } from "react";
-import { useSetting } from "@/lib/settings";
 import { Frame } from "./Frame";
 import { LeftPanel } from "./LeftPanel";
-import { RightPanel } from "./RightPanel";
 import { TabBar, tabs, type TabId } from "./TabBar";
 import { TopBar } from "./TopBar";
 import { AboutTab } from "./tabs/AboutTab";
@@ -36,8 +34,6 @@ export function Hud() {
     () => "",
   );
   const tab = tabs.find((t) => t.id === hash)?.id ?? "start";
-  const crt = useSetting("crt");
-  const motionOn = useSetting("motion");
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -57,39 +53,32 @@ export function Hud() {
     window.location.hash = id;
   };
 
-  const content = views[tab]();
-
   return (
-    <div className={`relative h-svh overflow-hidden bg-bg ${crt ? "scanlines" : ""}`}>
+    <div className="scanlines relative h-svh overflow-hidden bg-bg">
       <div className="hud-glow pointer-events-none absolute inset-0" aria-hidden />
-      <div className="relative mx-auto grid h-full max-w-[1920px] grid-rows-[auto_minmax(0,1fr)_auto] gap-3 p-3 sm:p-4 lg:grid-cols-[15rem_minmax(0,1fr)_15rem] lg:gap-x-6 lg:gap-y-4 lg:p-6">
-        <TopBar className="lg:col-span-3" />
-        <LeftPanel className="hidden lg:flex" />
+      <div className="relative mx-auto grid h-full max-w-[1920px] grid-rows-[auto_minmax(0,1fr)_auto] gap-3 p-3 sm:p-4 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-x-6 lg:gap-y-4 lg:p-6">
+        <TopBar className="lg:col-span-2" />
+        <LeftPanel className="hud-scroll hidden min-h-0 overflow-y-auto pr-1 lg:flex" />
 
         <main className="min-h-0">
           <Frame className="h-full border border-mint/15 bg-bg/60 backdrop-blur-[2px]">
             <div className="hud-scroll absolute inset-0 overflow-y-auto">
-              {motionOn ? (
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={tab}
-                    className="h-full min-h-full"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.22 }}
-                  >
-                    {content}
-                  </motion.div>
-                </AnimatePresence>
-              ) : (
-                <div className="h-full min-h-full">{content}</div>
-              )}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={tab}
+                  className="h-full min-h-full"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.22 }}
+                >
+                  {views[tab]()}
+                </motion.div>
+              </AnimatePresence>
             </div>
           </Frame>
         </main>
 
-        <RightPanel className="hidden lg:flex" />
         <TabBar tab={tab} onSelect={select} className="lg:col-start-2" />
       </div>
     </div>
