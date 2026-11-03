@@ -79,15 +79,15 @@ Every piece of text on the site lives in `src/data/`. To change a project descri
 
 ## Deploying
 
-Every push to `main` deploys to production on Vercel automatically. Pushes to any other branch get their own preview link. There are no environment variables to set.
+Every push to `main` deploys to production on Vercel automatically. Pushes to any other branch get their own preview link. The contact form needs one optional environment variable, `NEXT_PUBLIC_WEB3FORMS_KEY` (a free [Web3Forms](https://web3forms.com) access key). Without it the form falls back to opening the visitor's mail app.
 
 ## Credits
 
 The HUD layout takes its inspiration from the [Web Portfolio Design (Community)](https://www.figma.com/design/38uPfa2VCtGzZS3AaZff3G/Web-Portfolio-Design--Community-) file on Figma. I rebuilt the ideas in my own colors and content, and I did not use any of its artwork or text.
 
-## Content and reuse
+## License and reuse
 
-The code is public so you can read how it works. The text, project write-ups, paper summary and photo are mine, so please don't reuse them. If you like something here and want to build on it, get in touch first: **devyanshag@gmail.com**.
+The code is released under the [MIT License](LICENSE), so you can use it, change it and build on it. The MIT license covers the code only. The text, project write-ups, paper summary, photo and my name are not covered, so please replace them with your own. If you want to reuse any of them, email me first: **devyanshag@gmail.com**.
 
 ## Contact
 
