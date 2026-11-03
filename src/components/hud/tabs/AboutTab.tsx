@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { profile } from "@/data/profile";
+import { ScanPortrait } from "../ScanPortrait";
 import { Frame } from "../Frame";
 import { TabHeader } from "../TabHeader";
 import { ContactComposer } from "../ContactComposer";
@@ -8,16 +8,8 @@ export function AboutTab() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-8">
       <Frame className="mx-auto mb-5 h-44 w-36 shrink-0 bg-surface lg:hidden">
-        <div className="absolute inset-1.5 overflow-hidden">
-          <Image
-            src="/devyansh.jpg"
-            alt="Portrait of Devyansh Agarwal"
-            fill
-            sizes="144px"
-            className="object-cover object-[50%_20%]"
-          />
-        </div>
-      </Frame>
+        <ScanPortrait inset="inset-1.5" sizes="144px" />
+</Frame>
       <TabHeader id="about" cmd="cat about.md" title={`Who is ${profile.name}`} />
 
       <div className="mt-8 space-y-8">

@@ -1,12 +1,12 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import { useRef, useState } from "react";
 import type { PointerEvent } from "react";
 import { banners } from "@/data/banners";
 import { profile } from "@/data/profile";
 import { useDeviceTier, useWebGL2 } from "@/lib/capabilities";
+import { ScanPortrait } from "../ScanPortrait";
 import { Frame } from "../Frame";
 import { Tagline } from "../Tagline";
 
@@ -107,16 +107,8 @@ export function StartTab({ active }: { active: boolean }) {
 
         <div className="flex w-full flex-col items-center gap-4 lg:hidden">
           <Frame className="size-24 shrink-0 bg-surface">
-            <div className="absolute inset-1.5 overflow-hidden">
-              <Image
-                src="/devyansh.jpg"
-                alt="Portrait of Devyansh Agarwal"
-                fill
-                sizes="96px"
-                className="object-cover object-[50%_20%]"
-              />
-            </div>
-          </Frame>
+            <ScanPortrait inset="inset-1.5" sizes="96px" />
+</Frame>
           <dl className="grid max-w-sm grid-cols-2 gap-x-6 gap-y-3 text-left">
             <div>
               <dt className="tag">Occupation</dt>

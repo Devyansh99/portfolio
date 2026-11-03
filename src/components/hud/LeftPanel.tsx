@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import { profile } from "@/data/profile";
 import { ContactIcon } from "./ContactIcons";
+import { ScanPortrait } from "./ScanPortrait";
 import { Frame } from "./Frame";
 
 function Field({ label, value }: { label: string; value: string }) {
@@ -24,21 +24,8 @@ export function LeftPanel({ className = "" }: { className?: string }) {
   return (
     <aside className={`flex-col gap-4 xl:gap-5 ${className}`}>
       <Frame title="devyansh.jpg" className="aspect-square w-full max-w-[30vh] shrink-0 bg-surface">
-        <div className="absolute inset-2 overflow-hidden">
-          <Image
-            src="/devyansh.jpg"
-            alt="Portrait of Devyansh Agarwal"
-            fill
-            priority
-            sizes="240px"
-            className="object-cover object-[50%_20%]"
-          />
-          <span
-            aria-hidden
-            className="absolute inset-0 bg-gradient-to-t from-bg/70 via-transparent to-mint/10"
-          />
-        </div>
-      </Frame>
+        <ScanPortrait inset="inset-2" sizes="240px" priority />
+</Frame>
 
       <Field label="name" value={profile.name} />
       <Field label="role" value={profile.occupation} />
