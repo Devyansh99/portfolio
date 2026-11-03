@@ -48,3 +48,6 @@ TODO.md
 # source images
 image (*).png
 /.next-build/
+
+# local dev hosts (private network addresses)
+dev-origins.json
