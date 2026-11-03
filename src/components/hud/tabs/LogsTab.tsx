@@ -56,7 +56,7 @@ const ranges = Object.fromEntries(
 );
 
 export function LogsTab() {
-  const [open, setOpen] = useState<Record<string, boolean>>({ "0": true });
+  const [open, setOpen] = useState<Record<string, boolean>>({ "0": true, "1": true });
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 font-mono text-sm sm:px-8">
@@ -149,11 +149,29 @@ export function LogsTab() {
                   </span>
                 </button>
 
-                {isOpen && lines.length > 0 && (
+                {isOpen && (e.parts || lines.length > 0) && (
                   <div className="mt-3 space-y-1.5 border-l border-line pl-4 text-xs leading-relaxed">
                     <p className="text-muted">
-                      @@ {lines.length} {lines.length === 1 ? "change" : "changes"} @@
+                      @@ {e.parts?.length ?? lines.length}{" "}
+                      {(e.parts?.length ?? lines.length) === 1 ? "change" : "changes"} @@
                     </p>
+                    {e.summary && (
+                      <p className="diff-line pb-2 font-sans text-[14px] leading-relaxed text-ink">
+                        {e.summary}
+                      </p>
+                    )}
+                    {e.parts?.map((part, n) => (
+                      <div
+                        key={part.label}
+                        className="diff-line pb-2"
+                        style={{ animationDelay: `${(n + 1) * 60}ms` }}
+                      >
+                        <p className="text-mint">+ {part.label}</p>
+                        <p className="mt-0.5 pl-4 font-sans text-[13px] leading-relaxed text-ink/85">
+                          {part.text}
+                        </p>
+                      </div>
+                    ))}
                     {lines.map((p, n) => (
                       <p
                         key={p}

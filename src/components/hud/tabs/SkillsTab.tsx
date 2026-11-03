@@ -43,7 +43,7 @@ export function SkillsTab() {
       >
         Skill matrix loaded.
       </h2>
-      <p className="mb-5 mt-4 min-h-5 text-mint" aria-live="polite">
+      <p className="mb-5 mt-4 h-[4.5rem] overflow-hidden text-mint" aria-live="polite">
         {"> "}
         {readout}
       </p>

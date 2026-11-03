@@ -5,6 +5,8 @@ export type TimelineEntry = {
   period: string;
   detail?: string;
   points?: string[];
+  summary?: string;
+  parts?: { label: string; text: string }[];
 };
 
 export const timeline: TimelineEntry[] = [
@@ -13,10 +15,25 @@ export const timeline: TimelineEntry[] = [
     title: "AI Engineer",
     org: "SadakVision",
     period: "Jan 2025 – Present",
-    points: [
-      "Part of the team building SadakVision, a smartphone product that finds road damage and rates how severe it is, for city authorities.",
-      "Worked on the sensing side: deciding when a drive is worth recording, so phones save only the rough moments. That cut phone writes by 70.5% and kept devices from overheating.",
-      "Also contributed to the cloud pipeline that processes each recording and trained the model that spots damage in the video.",
+    summary:
+      "SadakVision turns an ordinary smartphone on a car dashboard into a road inspector. It records drives, finds potholes, cracks, manholes and garbage, and rates how bad each spot is, so city authorities know what to fix first. I am part of the team building the AI side.",
+    parts: [
+      {
+        label: "Knowing when to record",
+        text: "A phone cannot film every drive without overheating and filling its storage. I worked on a trigger that watches the phone's motion sensors (accelerometer, gyroscope and GPS, read 100 times a second) and flags rough stretches of road. It caught 82.3% of 62+ hand-labelled events and rates each one low, medium or high.",
+      },
+      {
+        label: "Cloud backend",
+        text: "Video is only recorded when the trigger fires, and the AWS backend handles those recordings. Result: 70.5% fewer writes on the phone, a phone that now runs 2.5 hours before throttling instead of 32 minutes, and 89.3% less work for the vision model.",
+      },
+      {
+        label: "Seeing the damage",
+        text: "Trained a YOLOv8m model on 21K+ images of Indian roads, 7K of them labelled by hand, to find potholes, cracks, manholes and garbage. It reaches 86.1% precision and 74.2% mAP@0.5.",
+      },
+      {
+        label: "Written up",
+        text: "The system is described in a research paper that is now under review. See the Research tab.",
+      },
     ],
   },
   {
@@ -24,10 +41,21 @@ export const timeline: TimelineEntry[] = [
     title: "AI Intern",
     org: "Kaksha AI",
     period: "Jun 2026 – Jul 2026",
-    points: [
-      "Built chat-native inline analytics with AI-generated insights and visual progress tracking across 7 batches and 500+ students.",
-      "Designed backend schemas and 20+ analytics APIs for real-time reporting, trend analysis, and interactive batch dashboards, including test-module analytics.",
-      "Integrated PDF and video transcript ingestion into chat with persistent per-chat context and source-cited answers that point to relevant lines or keywords.",
+    summary:
+      "Two months on Kaksha AI's chat product, working on the analytics and the document side of it.",
+    parts: [
+      {
+        label: "Analytics inside the chat",
+        text: "Instead of sending people to a separate report page, charts and AI-written insights appear inline in the chat, along with visual progress tracking. It covers 7 batches and 500+ students.",
+      },
+      {
+        label: "Backend and APIs",
+        text: "Designed the database schemas and 20+ analytics APIs behind it: real-time reporting, trend analysis, interactive batch dashboards and test-module analytics.",
+      },
+      {
+        label: "Chat with your documents",
+        text: "PDFs and video transcripts can be brought into a chat. Each chat keeps its own context, and answers cite their source by pointing to the relevant lines or keywords.",
+      },
     ],
   },
   {
