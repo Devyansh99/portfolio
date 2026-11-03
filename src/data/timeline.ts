@@ -10,17 +10,6 @@ export type TimelineEntry = {
 export const timeline: TimelineEntry[] = [
   {
     kind: "work",
-    title: "AI Intern",
-    org: "Kaksha AI",
-    period: "Jun 2026 – Jul 2026",
-    points: [
-      "Built chat-native inline analytics with AI-generated insights and visual progress tracking across 7 batches and 500+ students.",
-      "Designed backend schemas and 20+ analytics APIs for real-time reporting, trend analysis, and interactive batch dashboards, including test-module analytics.",
-      "Integrated PDF and video transcript ingestion into chat with persistent per-chat context and source-cited answers that point to relevant lines or keywords.",
-    ],
-  },
-  {
-    kind: "work",
     title: "AI Engineer",
     org: "SadakVision",
     period: "Jan 2025 – Present",
@@ -28,6 +17,17 @@ export const timeline: TimelineEntry[] = [
       "Built a Prophet-based anomaly trigger on 100 Hz sensor data with 82.3% recall across 62+ human-labeled impact events and low / medium / high severity scoring.",
       "Contributed to AWS backend architecture for sensor-triggered recording: 70.5% fewer phone writes and 89.3% less vision inference.",
       "Fine-tuned YOLOv8m on a 21K+ image Indian road dataset for 86.1% precision and 74.2% mAP@0.5.",
+    ],
+  },
+  {
+    kind: "work",
+    title: "AI Intern",
+    org: "Kaksha AI",
+    period: "Jun 2026 – Jul 2026",
+    points: [
+      "Built chat-native inline analytics with AI-generated insights and visual progress tracking across 7 batches and 500+ students.",
+      "Designed backend schemas and 20+ analytics APIs for real-time reporting, trend analysis, and interactive batch dashboards, including test-module analytics.",
+      "Integrated PDF and video transcript ingestion into chat with persistent per-chat context and source-cited answers that point to relevant lines or keywords.",
     ],
   },
   {
