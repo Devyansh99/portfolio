@@ -1,10 +1,12 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { useRef } from "react";
 import type { PointerEvent } from "react";
 import { profile } from "@/data/profile";
 import { useWebGL2 } from "@/lib/capabilities";
+import { Frame } from "../Frame";
 
 const HeroScene = dynamic(() => import("../../HeroScene"), { ssr: false });
 
@@ -45,7 +47,7 @@ function Rings() {
   );
 }
 
-export function StartTab() {
+export function StartTab({ active }: { active: boolean }) {
   const gl = useWebGL2();
   const pointer = useRef({ x: 0, y: 0 });
 
@@ -68,7 +70,7 @@ export function StartTab() {
     >
       <div className="bg-grid absolute inset-0" aria-hidden />
       <Rings />
-      {gl && (
+      {gl && active && (
         <div className="absolute inset-0" aria-hidden>
           <HeroScene pointer={pointer} />
         </div>
@@ -76,14 +78,25 @@ export function StartTab() {
 
       <div className="relative flex h-full flex-col items-center justify-between px-5 py-8 text-center">
         <div>
-          <p className="tag">{profile.name}</p>
+          <h1 className="tag">{profile.name}</h1>
           <p className="caps mx-auto mt-3 max-w-2xl text-sm font-medium leading-relaxed text-ink sm:text-base">
             {profile.tagline}
           </p>
         </div>
 
-        <div className="w-full lg:hidden">
-          <dl className="mx-auto grid max-w-sm grid-cols-2 gap-x-4 gap-y-3 text-left">
+        <div className="flex w-full flex-col items-center gap-4 lg:hidden">
+          <Frame className="size-24 shrink-0 bg-surface">
+            <div className="absolute inset-1.5 overflow-hidden">
+              <Image
+                src="/devyansh.jpg"
+                alt="Portrait of Devyansh Agarwal"
+                fill
+                sizes="96px"
+                className="object-cover object-[50%_20%]"
+              />
+            </div>
+          </Frame>
+          <dl className="grid max-w-sm grid-cols-2 gap-x-6 gap-y-3 text-left">
             <div>
               <dt className="tag">Occupation</dt>
               <dd className="caps font-semibold text-mint">{profile.occupation}</dd>
@@ -92,10 +105,16 @@ export function StartTab() {
               <dt className="tag">Corporation</dt>
               <dd className="caps font-semibold text-mint">{profile.corporation}</dd>
             </div>
+            <div className="col-span-2">
+              <dt className="tag">Status</dt>
+              <dd className="caps font-semibold text-mint">{profile.status}</dd>
+            </div>
           </dl>
         </div>
 
-        <p className="tag">press 1–6 to jump · move your cursor over the sphere</p>
+        <p className="tag hidden lg:block">
+          press 1–6 to jump · press / for commands · move your cursor over the sphere
+        </p>
       </div>
     </div>
   );

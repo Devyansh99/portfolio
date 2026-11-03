@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { projects, type Project } from "@/data/projects";
 import { privateNote } from "@/data/copy";
 import { Frame } from "../Frame";
@@ -12,11 +12,13 @@ const statusTone: Record<Project["status"], string> = {
   academic: "text-muted",
 };
 
-export function CreationsTab() {
+export function CreationsTab({ active }: { active: boolean }) {
   const [i, setI] = useState(0);
   const [open, setOpen] = useState<Project | null>(null);
+  const touchX = useRef<number | null>(null);
 
   useEffect(() => {
+    if (!active) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(null);
       if (open) return;
@@ -25,7 +27,7 @@ export function CreationsTab() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
+  }, [open, active]);
 
   return (
     <div className="relative flex h-full flex-col items-center justify-center px-4 py-6">
@@ -33,7 +35,19 @@ export function CreationsTab() {
         Creations
       </p>
 
-      <div className="relative flex w-full flex-1 items-center justify-center [perspective:1200px]">
+      <div
+        className="relative flex w-full flex-1 items-center justify-center [perspective:1200px]"
+        onTouchStart={(e) => {
+          touchX.current = e.touches[0].clientX;
+        }}
+        onTouchEnd={(e) => {
+          if (touchX.current === null) return;
+          const dx = e.changedTouches[0].clientX - touchX.current;
+          touchX.current = null;
+          if (dx < -50) setI((v) => Math.min(projects.length - 1, v + 1));
+          if (dx > 50) setI((v) => Math.max(0, v - 1));
+        }}
+      >
         <button
           type="button"
           aria-label="Previous project"
@@ -112,7 +126,7 @@ export function CreationsTab() {
       </div>
 
       <p className="tag mt-2">
-        {i + 1}/{projects.length} · use ← → keys
+        {i + 1}/{projects.length} · swipe or use ← → keys
       </p>
 
       {open && (

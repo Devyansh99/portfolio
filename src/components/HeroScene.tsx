@@ -1,6 +1,6 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import type { RefObject } from "react";
 import * as THREE from "three";
@@ -12,6 +12,7 @@ function Network({ pointer }: { pointer: RefObject<Pointer> }) {
   const group = useRef<THREE.Group>(null);
   const inner = useRef<THREE.Mesh>(null);
   const spin = useRef(0.6);
+  const narrow = useThree((state) => state.viewport.aspect < 1);
 
   const positions = useMemo(() => {
     const rand = mulberry32(7);
@@ -63,7 +64,7 @@ function Network({ pointer }: { pointer: RefObject<Pointer> }) {
   });
 
   return (
-    <group scale={0.85}>
+    <group scale={narrow ? 0.5 : 0.85}>
       <group ref={group} rotation={[0.2, 0.6, 0]}>
         <mesh>
           <icosahedronGeometry args={[1.6, 2]} />

@@ -1,10 +1,17 @@
+"use client";
+
 import { projects } from "@/data/projects";
 import { profile } from "@/data/profile";
 import { LocalTime } from "./LocalTime";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-export function TopBar({ className = "" }: { className?: string }) {
+type TopBarProps = {
+  className?: string;
+  onOpenPalette: () => void;
+};
+
+export function TopBar({ className = "", onOpenPalette }: TopBarProps) {
   return (
     <header className={`flex items-center justify-between gap-4 ${className}`}>
       <div className="flex items-baseline gap-5">
@@ -17,12 +24,23 @@ export function TopBar({ className = "" }: { className?: string }) {
           <span className="ml-2 text-xs font-medium text-muted">paper</span>
         </p>
       </div>
-      <p className="tag flex items-center gap-4 text-right">
+      <div className="tag flex items-center gap-3 text-right sm:gap-4">
+        <button
+          type="button"
+          onClick={onOpenPalette}
+          aria-label="Open command palette"
+          className="border border-line px-2 py-1 text-ink hover:border-mint hover:text-mint"
+        >
+          <span className="text-mint">/</span> command
+        </button>
         <span className="hidden sm:inline">{profile.location}</span>
         <span>
-          local time: <span className="text-ink"><LocalTime /></span>
+          <span className="hidden sm:inline">local time: </span>
+          <span className="text-ink">
+            <LocalTime />
+          </span>
         </span>
-      </p>
+      </div>
     </header>
   );
 }
