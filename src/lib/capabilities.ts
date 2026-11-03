@@ -63,6 +63,10 @@ function detectWebGL2(): boolean {
 
 const subscribeNever = () => () => {};
 
+export function useWebGL2(): boolean {
+  return useSyncExternalStore(subscribeNever, detectWebGL2, () => false);
+}
+
 export function useCanRender3D(): boolean {
   const reduce = usePrefersReducedMotion();
   const webgl = useSyncExternalStore(subscribeNever, detectWebGL2, () => false);

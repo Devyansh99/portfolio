@@ -6,7 +6,7 @@ import type { RefObject } from "react";
 import * as THREE from "three";
 import { mulberry32 } from "@/lib/rng";
 
-function Network() {
+function Network({ animate }: { animate: boolean }) {
   const group = useRef<THREE.Group>(null);
   const inner = useRef<THREE.Mesh>(null);
 
@@ -27,12 +27,13 @@ function Network() {
   }, []);
 
   useFrame((state, delta) => {
+    if (!animate) return;
     const g = group.current;
     if (g) {
       g.rotation.y += delta * 0.08;
       g.rotation.x = THREE.MathUtils.damp(
         g.rotation.x,
-        state.pointer.y * 0.35,
+        0.25 + state.pointer.y * 0.35,
         3,
         delta,
       );
@@ -52,46 +53,48 @@ function Network() {
 
   return (
     <group position={[0, -0.35, 0]}>
-    <group ref={group}>
-      <mesh>
-        <icosahedronGeometry args={[1.6, 2]} />
-        <meshBasicMaterial color="#3dffb0" wireframe transparent opacity={0.22} />
-      </mesh>
-      <mesh ref={inner}>
-        <icosahedronGeometry args={[0.8, 0]} />
-        <meshBasicMaterial color="#ffb547" wireframe transparent opacity={0.55} />
-      </mesh>
-      <points>
-        <bufferGeometry>
-          <bufferAttribute attach="attributes-position" args={[positions, 3]} />
-        </bufferGeometry>
-        <pointsMaterial
-          color="#3dffb0"
-          size={0.03}
-          sizeAttenuation
-          transparent
-          opacity={0.85}
-        />
-      </points>
-    </group>
+      <group ref={group} rotation={[0.25, 0.6, 0]}>
+        <mesh>
+          <icosahedronGeometry args={[1.6, 2]} />
+          <meshBasicMaterial color="#3dffb0" wireframe transparent opacity={0.22} />
+        </mesh>
+        <mesh ref={inner}>
+          <icosahedronGeometry args={[0.8, 0]} />
+          <meshBasicMaterial color="#ffb547" wireframe transparent opacity={0.55} />
+        </mesh>
+        <points>
+          <bufferGeometry>
+            <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+          </bufferGeometry>
+          <pointsMaterial
+            color="#3dffb0"
+            size={0.03}
+            sizeAttenuation
+            transparent
+            opacity={0.85}
+          />
+        </points>
+      </group>
     </group>
   );
 }
 
 type HeroSceneProps = {
   eventSource: RefObject<HTMLElement | null>;
+  animate: boolean;
 };
 
-export default function HeroScene({ eventSource }: HeroSceneProps) {
+export default function HeroScene({ eventSource, animate }: HeroSceneProps) {
   return (
     <Canvas
+      frameloop={animate ? "always" : "demand"}
       dpr={[1, 1.5]}
       camera={{ position: [0, 0, 6], fov: 50 }}
       gl={{ antialias: false, powerPreference: "low-power" }}
       eventSource={eventSource as RefObject<HTMLElement>}
       eventPrefix="client"
     >
-      <Network />
+      <Network animate={animate} />
     </Canvas>
   );
 }
