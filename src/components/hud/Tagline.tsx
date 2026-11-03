@@ -21,14 +21,9 @@ export function Tagline() {
               : "opacity-100 group-hover:scale-95 group-hover:opacity-0 group-focus-visible:opacity-0"
           }`}
         >
-          <span className="text-mint">ship</span>
-          <span className="text-muted">(</span>
-          <span className="text-mint">train</span>
-          <span className="text-muted">(</span>
-          <span className="text-mint">clean</span>
-          <span className="text-muted">(</span>
-          <span className="text-amber">real_world_mess</span>
-          <span className="text-muted">)))</span>
+          <span className="text-mint">git commit</span>
+          <span className="text-muted"> -m </span>
+          <span className="text-amber">&quot;make ai useful&quot;</span>
         </code>
         <span
           className={`caps col-start-1 row-start-1 text-sm font-medium leading-relaxed text-ink transition-all duration-300 sm:text-base ${

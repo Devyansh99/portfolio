@@ -5,7 +5,7 @@ export const profile = {
   status: "Building Cognalytix",
   school: "Plaksha University",
   location: "Mohali, India",
-  tagline: "I build AI and software that work on messy, real-world data.",
+  tagline: "I build AI and software that people can actually use.",
   bio: [
     {
       label: "The short version",
