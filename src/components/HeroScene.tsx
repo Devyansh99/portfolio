@@ -1,6 +1,6 @@
 "use client";
 
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import type { RefObject } from "react";
 import * as THREE from "three";
@@ -9,8 +9,6 @@ import { mulberry32 } from "@/lib/rng";
 function Network() {
   const group = useRef<THREE.Group>(null);
   const inner = useRef<THREE.Mesh>(null);
-  const viewport = useThree((state) => state.viewport);
-  const baseX = viewport.aspect > 1.2 ? viewport.width * 0.22 : 0;
 
   const positions = useMemo(() => {
     const rand = mulberry32(7);
@@ -40,7 +38,7 @@ function Network() {
       );
       g.position.x = THREE.MathUtils.damp(
         g.position.x,
-        baseX + state.pointer.x * 0.5,
+        state.pointer.x * 0.5,
         3,
         delta,
       );
@@ -53,6 +51,7 @@ function Network() {
   });
 
   return (
+    <group position={[0, -0.35, 0]}>
     <group ref={group}>
       <mesh>
         <icosahedronGeometry args={[1.6, 2]} />
@@ -74,6 +73,7 @@ function Network() {
           opacity={0.85}
         />
       </points>
+    </group>
     </group>
   );
 }
