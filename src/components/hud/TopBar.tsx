@@ -7,10 +7,10 @@ import { LocalTime } from "./LocalTime";
 type TopBarProps = {
   tab: string;
   className?: string;
-  onOpenPalette: () => void;
+  onOpenShell: () => void;
 };
 
-export function TopBar({ tab, className = "", onOpenPalette }: TopBarProps) {
+export function TopBar({ tab, className = "", onOpenShell }: TopBarProps) {
   return (
     <header className={`flex items-center justify-between gap-4 ${className}`}>
       <p className="min-w-0 truncate font-mono text-sm">
@@ -24,12 +24,12 @@ export function TopBar({ tab, className = "", onOpenPalette }: TopBarProps) {
       <div className="tag flex items-center gap-3 text-right sm:gap-4">
         <button
           type="button"
-          onClick={onOpenPalette}
-          aria-label="Open command palette"
+          onClick={onOpenShell}
+          aria-label="Focus the shell prompt"
           className="whitespace-nowrap border border-line px-2.5 py-1.5 text-ink hover:border-mint hover:text-mint"
         >
           <span className="text-mint">/</span>
-          <span className="hidden sm:inline"> command</span>
+          <span className="hidden sm:inline"> shell</span>
         </button>
         <span className="hidden sm:inline">{profile.location}</span>
         <span>

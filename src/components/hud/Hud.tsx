@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { CommandPalette } from "./CommandPalette";
 import { Frame } from "./Frame";
 import { LeftPanel } from "./LeftPanel";
+import { Shell } from "./Shell";
 import { TabBar, tabs, type TabId } from "./TabBar";
 import { TopBar } from "./TopBar";
 import { AboutTab } from "./tabs/AboutTab";
@@ -39,6 +40,7 @@ export function Hud() {
   const [paletteOpen, setPaletteOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
+  const shellRef = useRef<HTMLInputElement>(null);
   const firstRun = useRef(true);
 
   const frame = useRef(0);
@@ -66,6 +68,7 @@ export function Hud() {
       firstRun.current = false;
       return;
     }
+    if (document.activeElement === shellRef.current) return;
     document
       .querySelector<HTMLElement>(`[data-panel="${tab}"] h1, [data-panel="${tab}"] h2`)
       ?.focus({ preventScroll: true });
@@ -76,9 +79,14 @@ export function Hud() {
       const el = e.target as Element;
       if (el.closest?.("input,textarea,[contenteditable]")) return;
       const k = e.key.toLowerCase();
-      if (k === "/" || ((e.metaKey || e.ctrlKey) && k === "k")) {
+      if ((e.metaKey || e.ctrlKey) && k === "k") {
         e.preventDefault();
         setPaletteOpen(true);
+        return;
+      }
+      if (k === "/" && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        e.preventDefault();
+        shellRef.current?.focus();
         return;
       }
       if (e.metaKey || e.ctrlKey || e.altKey) return;
@@ -99,11 +107,11 @@ export function Hud() {
   return (
     <div className="scanlines relative h-svh overflow-hidden bg-bg">
       <div className="hud-glow pointer-events-none absolute inset-0" aria-hidden />
-      <div className="relative mx-auto grid h-full max-w-[1920px] grid-rows-[auto_minmax(0,1fr)_auto] gap-3 p-3 sm:p-4 lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-x-6 lg:gap-y-4 lg:p-6 xl:grid-cols-[15rem_minmax(0,1fr)]">
+      <div className="relative mx-auto grid h-full max-w-[1920px] grid-rows-[auto_minmax(0,1fr)_auto_auto] gap-3 p-3 sm:p-4 lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-x-6 lg:gap-y-4 lg:p-6 xl:grid-cols-[15rem_minmax(0,1fr)]">
         <TopBar
           tab={tab}
           className="lg:col-span-2"
-          onOpenPalette={() => setPaletteOpen(true)}
+          onOpenShell={() => shellRef.current?.focus()}
         />
         <LeftPanel className="hud-scroll hidden min-h-0 overflow-y-auto pr-1 pt-3 lg:flex" />
 
@@ -136,6 +144,14 @@ export function Hud() {
             </div>
           </Frame>
         </main>
+
+        <Shell
+          tab={tab}
+          inputRef={shellRef}
+          onGo={select}
+          onPalette={() => setPaletteOpen(true)}
+          className="lg:col-start-2"
+        />
 
         <TabBar tab={tab} onSelect={select} className="lg:col-start-2" />
       </div>

@@ -126,7 +126,7 @@ export function StartTab({ active }: { active: boolean }) {
         </div>
 
         <p className="cursor tag hidden lg:block">
-          boot ok · press 1-6 to jump · / for commands · move your cursor over the sphere
+          boot ok · press 1-6 to jump · / opens the shell · move your cursor over the sphere
         </p>
       </div>
     </div>
