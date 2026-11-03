@@ -5,8 +5,7 @@ export const profile = {
   status: "Building Cognalytix",
   school: "Plaksha University",
   location: "Mohali, India",
-  tagline:
-    "I build AI systems that work on messy, real-world data, from road sensors and school textbooks to spreadsheets and handwriting.",
+  tagline: "I build AI and software that work on messy, real-world data.",
   bio: [
     {
       label: "The short version",
@@ -24,7 +23,7 @@ export const profile = {
   facts: [
     ["based in", "Mohali, India"],
     ["studying", "CS & AI, Plaksha, 2027"],
-    ["focus", "applied ML, RAG, agents, vision"],
+    ["focus", "AI and software"],
     ["cgpa", "8.09 / 10"],
   ],
   email: "devyanshag@gmail.com",

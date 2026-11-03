@@ -7,6 +7,7 @@ import type { PointerEvent } from "react";
 import { profile } from "@/data/profile";
 import { useWebGL2 } from "@/lib/capabilities";
 import { Frame } from "../Frame";
+import { Tagline } from "../Tagline";
 
 const HeroScene = dynamic(() => import("../../HeroScene"), { ssr: false });
 
@@ -79,9 +80,7 @@ export function StartTab({ active }: { active: boolean }) {
       <div className="relative flex h-full flex-col items-center justify-between px-5 py-8 text-center">
         <div>
           <h1 className="tag">{profile.name}</h1>
-          <p className="caps mx-auto mt-3 max-w-2xl text-sm font-medium leading-relaxed text-ink sm:text-base">
-            {profile.tagline}
-          </p>
+          <Tagline />
         </div>
 
         <div className="flex w-full flex-col items-center gap-4 lg:hidden">
