@@ -95,6 +95,12 @@ export function ScanPortrait({
     let dpr = 1;
     let raf = 0;
     let start = 0;
+    let last = 0;
+    let scrolledAt = 0;
+    const onScroll = () => {
+      scrolledAt = performance.now();
+    };
+    window.addEventListener("scroll", onScroll, { capture: true, passive: true });
 
     const size = () => {
       const r = box.getBoundingClientRect();
@@ -158,6 +164,8 @@ export function ScanPortrait({
     const frame = (now: number) => {
       raf = requestAnimationFrame(frame);
       if (document.hidden || box.offsetParent === null) return;
+      if (now - last < 33 || now - scrolledAt < 160) return;
+      last = now;
       if (!start) start = now;
       if (w === 0 || (layer === null && img.complete && img.naturalWidth)) {
         size();
@@ -210,6 +218,7 @@ export function ScanPortrait({
     raf = requestAnimationFrame(frame);
     return () => {
       cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll, { capture: true });
       ro.disconnect();
     };
   }, []);

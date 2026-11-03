@@ -41,12 +41,17 @@ export function Hud() {
   const barRef = useRef<HTMLDivElement>(null);
   const firstRun = useRef(true);
 
+  const frame = useRef(0);
+
   const updateBar = () => {
-    const el = scrollRef.current;
-    const bar = barRef.current;
-    if (!el || !bar) return;
-    const max = el.scrollHeight - el.clientHeight;
-    bar.style.width = max > 8 ? `${(el.scrollTop / max) * 100}%` : "0%";
+    cancelAnimationFrame(frame.current);
+    frame.current = requestAnimationFrame(() => {
+      const el = scrollRef.current;
+      const bar = barRef.current;
+      if (!el || !bar) return;
+      const max = el.scrollHeight - el.clientHeight;
+      bar.style.transform = `scaleX(${max > 8 ? el.scrollTop / max : 0})`;
+    });
   };
 
   useEffect(() => {
@@ -107,8 +112,8 @@ export function Hud() {
             <div
               ref={barRef}
               aria-hidden
-              className="pointer-events-none absolute bottom-0 left-0 z-20 h-0.5 bg-mint shadow-[0_0_8px_var(--mint)]"
-              style={{ width: 0 }}
+              className="pointer-events-none absolute bottom-0 left-0 z-20 h-0.5 w-full origin-left bg-mint will-change-transform"
+              style={{ transform: "scaleX(0)" }}
             />
             <div
               ref={scrollRef}

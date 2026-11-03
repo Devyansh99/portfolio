@@ -77,6 +77,8 @@ body {
     rgba(0, 0, 0, 0.14) 3px
   );
   opacity: 0.4;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .hud-scroll {
