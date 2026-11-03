@@ -78,6 +78,18 @@ export function CommandPalette({ onClose, onGo }: CommandPaletteProps) {
         run: () => "devyansh_agarwal, uid=2027, groups=plaksha,sadakvision",
       },
       {
+        id: "commit",
+        label: 'git commit -m "make ai useful"',
+        keywords: "tagline git",
+        run: () => "[main] I build AI and software that people can actually use.",
+      },
+      {
+        id: "npm",
+        label: "npm run ai && npm run ship",
+        keywords: "tagline npm build ship",
+        run: () => "I build AI and ship software.",
+      },
+      {
         id: "sudo",
         label: "sudo hire devyansh",
         keywords: "hire sudo",
