@@ -257,7 +257,7 @@ export function Shell({
 
       <div
         className={`hud-scroll mb-1.5 flex items-center gap-1.5 overflow-x-auto ${
-          entries.length > 0 ? "lg:hidden" : ""
+          "lg:hidden"
         }`}
       >
         <button
@@ -316,6 +316,14 @@ export function Shell({
           placeholder="type help, or press [commands]"
           className="min-h-11 min-w-0 flex-1 bg-transparent font-mono text-base text-ink outline-none placeholder:text-muted/70 focus-visible:outline-none sm:text-sm"
         />
+        <button
+          type="button"
+          aria-expanded={ref}
+          onClick={() => setRef((v) => !v)}
+          className="hidden shrink-0 px-1 py-2 font-mono text-xs text-mint hover:text-amber lg:block"
+        >
+          [commands]
+        </button>
         <button
           type="submit"
           className="hidden shrink-0 px-1 py-2 font-mono text-xs text-muted hover:text-mint sm:block"

@@ -6,7 +6,7 @@ import { ContactComposer } from "../ContactComposer";
 
 export function AboutTab() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-8">
+    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-8">
       <Frame className="mx-auto mb-5 h-44 w-36 shrink-0 bg-surface lg:hidden">
         <ScanPortrait inset="inset-1.5" sizes="144px" />
 </Frame>

@@ -48,7 +48,7 @@ export function TabBar({ tab, onSelect, className = "" }: TabBarProps) {
             type="button"
             aria-current={active ? "page" : undefined}
             onClick={() => onSelect(t.id)}
-            className={`group min-h-11 min-w-[7rem] flex-1 px-3 py-1.5 text-left font-mono transition-colors lg:min-w-0 ${
+            className={`group min-h-11 min-w-[7rem] flex-1 px-3 py-1.5 lg:min-h-9 lg:py-1 text-left font-mono transition-colors lg:min-w-0 ${
               active
                 ? "bg-mint text-bg"
                 : "bg-surface text-muted hover:bg-surface-2 hover:text-mint"

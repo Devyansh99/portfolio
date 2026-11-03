@@ -98,6 +98,7 @@ body {
 }
 
 .hud-scroll {
+  overscroll-behavior: contain;
   scrollbar-width: thin;
   scrollbar-color: var(--mint-dim) transparent;
 }

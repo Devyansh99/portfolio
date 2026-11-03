@@ -60,7 +60,7 @@ export function LogsTab() {
   const [open, setOpen] = useState<Record<string, boolean>>({ "0": true, "1": true });
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 font-mono text-sm sm:px-8">
+    <div className="mx-auto max-w-5xl px-4 py-8 font-mono text-sm sm:px-8">
       <TabHeader id="logs" cmd="git log --graph --all" title="Data log dump initialized." />
 
       <p className="mb-6 mt-6 flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted">

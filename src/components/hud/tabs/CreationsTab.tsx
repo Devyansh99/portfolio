@@ -6,6 +6,7 @@ import { projects, type Project } from "@/data/projects";
 import { projectCodes } from "@/data/codes";
 import { privateNote } from "@/data/copy";
 import { Frame } from "../Frame";
+import { useSmoothScroll } from "@/lib/smoothScroll";
 import { TabHeader } from "../TabHeader";
 
 const statusTone: Record<Project["status"], string> = {
@@ -31,6 +32,8 @@ export function CreationsTab({
     initialId ? (projects[start] ?? null) : null,
   );
   const [copied, setCopied] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useSmoothScroll(dialogRef, open !== null);
   const touchX = useRef<number | null>(null);
   const opener = useRef<HTMLButtonElement | null>(null);
 
@@ -74,8 +77,12 @@ export function CreationsTab({
   };
 
   return (
-    <div className="relative flex h-full flex-col items-center px-4 py-6">
-      <div className="mb-2 w-full max-w-4xl">
+    <div
+      className={`relative flex h-full flex-col items-center px-4 py-6 ${
+        open ? "overflow-hidden" : ""
+      }`}
+    >
+      <div className="mb-2 w-full max-w-5xl">
         <TabHeader id="creations" cmd="ls creations/" title="Seven projects, tap a card for details." />
       </div>
 
@@ -102,7 +109,7 @@ export function CreationsTab({
           ‹
         </button>
 
-        <div className="relative h-[26rem] w-full max-w-4xl">
+        <div className="relative h-[30rem] w-full max-w-5xl">
           {projects.map((p, idx) => {
             const off = idx - i;
             if (Math.abs(off) > 1) return null;
@@ -125,7 +132,7 @@ export function CreationsTab({
                   transform: `translate(-50%, -50%) translateX(${off * 108}%) rotateY(${-off * 36}deg) scale(${isActive ? 1 : 0.82})`,
                   opacity: isActive ? 1 : 0.55,
                 }}
-                className={`absolute left-1/2 top-1/2 h-[25rem] w-[17.5rem] transition-all duration-500 sm:w-[21rem] ${
+                className={`absolute left-1/2 top-1/2 h-[29rem] w-[18.5rem] transition-all duration-500 sm:w-[24rem] ${
                   isActive ? "z-10" : "hidden cursor-pointer sm:block"
                 }`}
               >
@@ -202,14 +209,15 @@ export function CreationsTab({
 
       {open && (
         <div
-          className="hud-scroll absolute inset-0 z-30 overflow-y-auto bg-bg/95 backdrop-blur-sm"
+          ref={dialogRef}
+          className="hud-scroll absolute inset-0 z-30 overflow-y-auto bg-bg"
           role="dialog"
           aria-modal="true"
           aria-labelledby="creation-title"
           onKeyDown={trapTab}
         >
-          <div className="mx-auto max-w-2xl px-5 pb-10 sm:px-10">
-            <div className="sticky top-0 z-10 -mx-5 flex items-start justify-between gap-4 bg-bg/95 px-5 py-4 backdrop-blur sm:-mx-10 sm:px-10 sm:pt-8">
+          <div className="mx-auto max-w-4xl px-5 pb-10 sm:px-10">
+            <div className="sticky top-0 z-10 -mx-5 flex items-start justify-between gap-4 bg-bg px-5 py-4 sm:-mx-10 sm:px-10 sm:pt-8">
               <div>
                 <p className="tag">
                   {open.period} · {open.status}

@@ -10,6 +10,7 @@ import { Shell } from "./Shell";
 import { TabBar, tabs, type TabId } from "./TabBar";
 import { TopBar } from "./TopBar";
 import { validSub } from "@/lib/shell";
+import { useSmoothScroll } from "@/lib/smoothScroll";
 import { AboutTab } from "./tabs/AboutTab";
 import { CreationsTab } from "./tabs/CreationsTab";
 import { LogsTab } from "./tabs/LogsTab";
@@ -65,6 +66,7 @@ export function Hud() {
   const firstRun = useRef(true);
 
   const frame = useRef(0);
+  useSmoothScroll(scrollRef);
 
   const updateBar = () => {
     cancelAnimationFrame(frame.current);
@@ -134,7 +136,7 @@ export function Hud() {
   return (
     <div className="scanlines relative h-svh overflow-hidden bg-bg">
       <div className="hud-glow pointer-events-none absolute inset-0" aria-hidden />
-      <div className="relative mx-auto grid h-full max-w-[1920px] grid-rows-[auto_minmax(0,1fr)_auto_auto] gap-3 p-3 sm:p-4 lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-x-6 lg:gap-y-4 lg:p-6 xl:grid-cols-[15rem_minmax(0,1fr)]">
+      <div className="relative mx-auto grid h-full max-w-[1920px] grid-rows-[auto_minmax(0,1fr)_auto_auto] gap-2 p-2 sm:p-3 lg:grid-cols-[11rem_minmax(0,1fr)] lg:gap-x-4 lg:gap-y-3 lg:p-4 xl:grid-cols-[13rem_minmax(0,1fr)]">
         <TopBar
           tab={tab}
           className="lg:col-span-2"

@@ -36,7 +36,7 @@ export function SkillsTab() {
       : "hover a skill or a project code";
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 font-mono text-sm sm:px-8">
+    <div className="mx-auto max-w-5xl px-4 py-8 font-mono text-sm sm:px-8">
       <TabHeader id="skills" cmd="cat skills.md" title="Skill matrix loaded." />
       <p className="mb-5 mt-4 h-[4.5rem] overflow-hidden text-mint" aria-live="polite">
         {"> "}

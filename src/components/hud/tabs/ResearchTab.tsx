@@ -3,7 +3,7 @@ import { TabHeader } from "../TabHeader";
 
 export function ResearchTab() {
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-8">
+    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-8">
       <TabHeader id="research" cmd="less paper.pdf" title="One paper, under review." />
 
       <span className="caps inline-flex items-center gap-2 border border-amber/60 bg-amber/10 px-3 py-1 text-sm font-bold text-amber">
