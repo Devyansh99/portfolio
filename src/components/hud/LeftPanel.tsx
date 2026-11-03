@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { profile } from "@/data/profile";
 import { Frame } from "./Frame";
@@ -17,15 +18,23 @@ function Field({ label, value }: { label: string; value: string }) {
 
 export function LeftPanel({ className = "" }: { className?: string }) {
   const [open, setOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   return (
     <aside className={`flex-col gap-5 ${className}`}>
-      <Frame className="aspect-square w-full bg-surface">
-        <div className="absolute inset-2 flex items-center justify-center overflow-hidden bg-gradient-to-br from-mint/15 via-transparent to-amber/10">
-          <span className="caps text-6xl font-bold text-mint/90">DA</span>
+      <Frame className="aspect-square w-full shrink-0 bg-surface">
+        <div className="absolute inset-2 overflow-hidden">
+          <Image
+            src="/devyansh.jpg"
+            alt="Portrait of Devyansh Agarwal"
+            fill
+            priority
+            sizes="240px"
+            className="object-cover object-[50%_20%]"
+          />
           <span
             aria-hidden
-            className="absolute inset-x-0 top-1/2 h-px bg-mint/30"
+            className="absolute inset-0 bg-gradient-to-t from-bg/70 via-transparent to-mint/10"
           />
         </div>
       </Frame>
@@ -39,6 +48,28 @@ export function LeftPanel({ className = "" }: { className?: string }) {
         <p className="caps mt-1 border border-mint/40 bg-mint/10 px-2 py-1.5 text-sm font-semibold text-mint">
           {profile.status}
         </p>
+      </div>
+
+      <div>
+        <p className="tag">Gmail</p>
+        <p className="mt-1 select-all break-all font-mono text-[13px] text-ink">
+          {profile.email}
+        </p>
+        <button
+          type="button"
+          onClick={() => {
+            navigator.clipboard
+              .writeText(profile.email)
+              .then(() => {
+                setCopied(true);
+                setTimeout(() => setCopied(false), 1500);
+              })
+              .catch(() => {});
+          }}
+          className="tag mt-1 hover:text-mint"
+        >
+          {copied ? "copied ✓" : "copy address"}
+        </button>
       </div>
 
       <div>

@@ -44,3 +44,7 @@ next-env.d.ts
 PROJECT_INFO.md
 TODO.md
 .claude/
+
+# source images
+image (*).png
+/.next-build/

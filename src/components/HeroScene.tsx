@@ -1,14 +1,18 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import type { RefObject } from "react";
 import * as THREE from "three";
 import { mulberry32 } from "@/lib/rng";
 
-function Network({ animate }: { animate: boolean }) {
+type Pointer = { x: number; y: number };
+
+function Network({ pointer }: { pointer: RefObject<Pointer> }) {
   const group = useRef<THREE.Group>(null);
   const inner = useRef<THREE.Mesh>(null);
+  const spin = useRef(0.6);
+  const narrow = useThree((state) => state.viewport.aspect < 1);
 
   const positions = useMemo(() => {
     const rand = mulberry32(7);
@@ -27,22 +31,30 @@ function Network({ animate }: { animate: boolean }) {
   }, []);
 
   useFrame((state, delta) => {
-    if (!animate) return;
     const g = group.current;
     if (g) {
-      g.rotation.y += delta * 0.08;
-      g.rotation.x = THREE.MathUtils.damp(
-        g.rotation.x,
-        0.25 + state.pointer.y * 0.35,
-        3,
-        delta,
-      );
+      spin.current += delta * 0.08;
+      const p = pointer.current;
+      const { viewport } = state;
       g.position.x = THREE.MathUtils.damp(
         g.position.x,
-        state.pointer.x * 0.5,
-        3,
+        p.x * viewport.width * 0.12,
+        4,
         delta,
       );
+      g.position.y = THREE.MathUtils.damp(
+        g.position.y,
+        p.y * viewport.height * 0.12,
+        4,
+        delta,
+      );
+      g.rotation.y = THREE.MathUtils.damp(
+        g.rotation.y,
+        spin.current + p.x * 0.7,
+        4,
+        delta,
+      );
+      g.rotation.x = THREE.MathUtils.damp(g.rotation.x, -p.y * 0.6, 4, delta);
     }
     const m = inner.current;
     if (m) {
@@ -52,8 +64,8 @@ function Network({ animate }: { animate: boolean }) {
   });
 
   return (
-    <group position={[0, -0.35, 0]}>
-      <group ref={group} rotation={[0.25, 0.6, 0]}>
+    <group scale={narrow ? 0.5 : 0.85}>
+      <group ref={group} rotation={[0.2, 0.6, 0]}>
         <mesh>
           <icosahedronGeometry args={[1.6, 2]} />
           <meshBasicMaterial color="#3dffb0" wireframe transparent opacity={0.22} />
@@ -79,22 +91,14 @@ function Network({ animate }: { animate: boolean }) {
   );
 }
 
-type HeroSceneProps = {
-  eventSource: RefObject<HTMLElement | null>;
-  animate: boolean;
-};
-
-export default function HeroScene({ eventSource, animate }: HeroSceneProps) {
+export default function HeroScene({ pointer }: { pointer: RefObject<Pointer> }) {
   return (
     <Canvas
-      frameloop={animate ? "always" : "demand"}
       dpr={[1, 1.5]}
       camera={{ position: [0, 0, 6], fov: 50 }}
       gl={{ antialias: false, powerPreference: "low-power" }}
-      eventSource={eventSource as RefObject<HTMLElement>}
-      eventPrefix="client"
     >
-      <Network animate={animate} />
+      <Network pointer={pointer} />
     </Canvas>
   );
 }

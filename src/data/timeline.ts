@@ -14,9 +14,9 @@ export const timeline: TimelineEntry[] = [
     org: "SadakVision",
     period: "Jan 2025 – Present",
     points: [
-      "Built a Prophet-based anomaly trigger on 100 Hz sensor data with 82.3% recall across 62+ human-labeled impact events and low / medium / high severity scoring.",
-      "Contributed to AWS backend architecture for sensor-triggered recording: 70.5% fewer phone writes and 89.3% less vision inference.",
-      "Fine-tuned YOLOv8m on a 21K+ image Indian road dataset for 86.1% precision and 74.2% mAP@0.5.",
+      "Part of the team building SadakVision, a smartphone product that finds road damage and rates how severe it is, for city authorities.",
+      "Worked on the sensing side: deciding when a drive is worth recording, so phones save only the rough moments. That cut phone writes by 70.5% and kept devices from overheating.",
+      "Also contributed to the cloud pipeline that processes each recording and trained the model that spots damage in the video.",
     ],
   },
   {
