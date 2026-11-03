@@ -1,10 +1,10 @@
 export const skillGroups = [
   {
-    label: "languages",
+    command: "languages --db",
     items: ["Python", "C++", "SQL", "TypeScript"],
   },
   {
-    label: "ml",
+    command: "ai --ml",
     items: [
       "Machine Learning",
       "Deep Learning",
@@ -17,7 +17,7 @@ export const skillGroups = [
     ],
   },
   {
-    label: "frameworks",
+    command: "frameworks --tools",
     items: [
       "PyTorch",
       "TensorFlow",
@@ -31,7 +31,7 @@ export const skillGroups = [
     ],
   },
   {
-    label: "web",
+    command: "web --apis",
     items: ["React", "TypeScript", "REST APIs"],
   },
 ] as const;

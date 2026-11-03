@@ -1,68 +1,109 @@
 "use client";
 
-import type { PointerEvent } from "react";
-import { heroCtas } from "@/data/copy";
+import dynamic from "next/dynamic";
+import { useEffect, useRef, useState } from "react";
 import { profile } from "@/data/profile";
-import { usePointerFine } from "@/lib/capabilities";
-import { registerImpact } from "@/lib/scene-store";
-import { HeroTrace } from "./HeroTrace";
-import { MagneticLink } from "./MagneticLink";
+import { useCanRender3D, usePrefersReducedMotion } from "@/lib/capabilities";
+
+const HeroScene = dynamic(() => import("./HeroScene"), { ssr: false });
+
+const bootLines = [
+  "$ ./boot portfolio --mode=interactive",
+  "> loading modules: vision, rl, rag, agents ... ok",
+  "> user: devyansh_agarwal",
+  "> status: building",
+];
+
+const totalChars = bootLines.reduce((n, l) => n + l.length, 0);
+
+function useTypedChars(total: number) {
+  const reduce = usePrefersReducedMotion();
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (reduce || count >= total) return;
+    const t = setTimeout(() => setCount((c) => c + 1), count === 0 ? 400 : 22);
+    return () => clearTimeout(t);
+  }, [count, total, reduce]);
+
+  return reduce ? total : count;
+}
+
+function renderTyped(lines: string[], typed: number) {
+  let left = typed;
+  return lines.map((line) => {
+    const shown = line.slice(0, Math.max(0, left));
+    left -= line.length;
+    return shown;
+  });
+}
 
 export function Hero() {
-  const fine = usePointerFine();
-
-  const onDown = (e: PointerEvent<HTMLElement>) => {
-    if ((e.target as HTMLElement).closest("a,button")) return;
-    registerImpact(e);
-  };
+  const ref = useRef<HTMLElement>(null);
+  const can3D = useCanRender3D();
+  const typed = useTypedChars(totalChars);
+  const lines = renderTyped(bootLines, typed);
+  const done = typed >= totalChars;
 
   return (
     <section
       id="top"
-      data-scene="hero"
-      onPointerDown={onDown}
-      className="relative flex min-h-svh flex-col justify-end px-5 pb-8 pt-28 md:px-10"
+      ref={ref}
+      className="relative flex min-h-svh items-center overflow-hidden px-4 pt-20 sm:px-6"
     >
-      <div className="mx-auto w-full max-w-[1360px]">
-        <div className="flex items-baseline justify-between gap-6">
-          <p className="label">{profile.role}</p>
-          <p className="label hidden md:block">{profile.location}</p>
+      <div className="bg-grid absolute inset-0" aria-hidden />
+      {can3D && (
+        <div className="absolute inset-0 opacity-90" aria-hidden>
+          <HeroScene eventSource={ref} />
         </div>
+      )}
+      <div
+        className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-bg"
+        aria-hidden
+      />
 
-        <div className="mt-6 grid grid-cols-12 items-end gap-x-6">
-          <h1 className="font-display font-condensed text-display-xl col-span-12 text-ink lg:col-span-8">
-            Devyansh
-            <br />
-            Agarwal
-          </h1>
-          <div className="col-span-12 mt-8 lg:col-span-4 lg:mt-0 lg:pb-3">
-            <p className="text-lead text-ink">{profile.tagline}</p>
-            <div className="mt-6 flex flex-wrap gap-x-7 gap-y-3 text-[15px]">
-              <MagneticLink
-                href="#work"
-                className="border-b border-mint pb-0.5 text-mint"
-              >
-                {heroCtas.work} ↓
-              </MagneticLink>
-              <MagneticLink
-                href="#research"
-                className="border-b border-line-strong pb-0.5 hover:border-mint hover:text-mint"
-              >
-                {heroCtas.paper}
-              </MagneticLink>
-              <MagneticLink
-                href={`mailto:${profile.email}`}
-                className="border-b border-line-strong pb-0.5 hover:border-mint hover:text-mint"
-              >
-                {heroCtas.email}
-              </MagneticLink>
-            </div>
-          </div>
-        </div>
+      <div className="relative mx-auto w-full max-w-6xl">
+        <p
+          className="mb-8 min-h-[7.5rem] max-w-xl font-mono text-xs leading-6 text-muted sm:text-sm"
+          aria-hidden
+        >
+          {lines.map((line, i) => (
+            <span key={bootLines[i]} className="block">
+              {line}
+            </span>
+          ))}
+        </p>
 
-        <div className="mt-10">
-          <HeroTrace />
-          {fine && <p className="label mt-2">{heroCtas.hint}</p>}
+        <h1 className="glow-mint font-mono text-4xl font-bold leading-tight tracking-tight text-mint sm:text-6xl lg:text-7xl">
+          {profile.name}
+          {done && <span className="caret" aria-hidden />}
+        </h1>
+        <p className="mt-4 font-mono text-sm text-amber sm:text-base">
+          {profile.role}
+        </p>
+        <p className="mt-6 max-w-xl text-lg text-ink/90 sm:text-xl">
+          {profile.tagline}
+        </p>
+
+        <div className="mt-10 flex flex-wrap gap-4 font-mono text-sm">
+          <a
+            href="#projects"
+            className="rounded border border-mint bg-mint px-5 py-2.5 font-bold text-bg transition hover:bg-transparent hover:text-mint"
+          >
+            view projects
+          </a>
+          <a
+            href="#research"
+            className="rounded border border-line px-5 py-2.5 text-ink transition hover:border-mint hover:text-mint"
+          >
+            read the paper
+          </a>
+          <a
+            href="#contact"
+            className="rounded border border-line px-5 py-2.5 text-ink transition hover:border-mint hover:text-mint"
+          >
+            contact
+          </a>
         </div>
       </div>
     </section>

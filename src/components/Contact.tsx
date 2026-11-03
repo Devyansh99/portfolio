@@ -1,52 +1,50 @@
-import { sectionIntros } from "@/data/copy";
 import { profile } from "@/data/profile";
-import { CopyEmailButton } from "./CopyEmailButton";
-import { MagneticLink } from "./MagneticLink";
-import { withEm } from "./Em";
+import { Reveal } from "./Reveal";
+import { SectionHeading } from "./SectionHeading";
+import { TerminalWindow } from "./TerminalWindow";
+
+const channels = [
+  { label: "email", value: profile.email, href: `mailto:${profile.email}` },
+  { label: "github", value: "github.com/Devyansh99", href: profile.github },
+  {
+    label: "linkedin",
+    value: "linkedin.com/in/devyansh99",
+    href: profile.linkedin,
+  },
+] as const;
 
 export function Contact() {
   return (
-    <section
-      id="contact"
-      data-scene="contact"
-      className="mx-auto flex min-h-svh max-w-[1360px] flex-col justify-end px-5 py-24 md:px-10 md:py-40"
-    >
-      <p className="label">06 / contact</p>
-      <h2 className="font-display font-condensed text-display-l mt-4">
-        {withEm("Write to *me*.")}
-      </h2>
-      <p className="text-lead mt-6 max-w-xl text-ink-2">
-        {sectionIntros.contact}
-      </p>
-
-      <div className="mt-12 flex flex-wrap items-baseline gap-x-6 gap-y-2">
-        <MagneticLink
-          href={`mailto:${profile.email}`}
-          className="font-display font-condensed text-[clamp(2rem,6vw,5.5rem)] leading-none tracking-tight hover:text-mint"
-        >
-          {profile.email}
-        </MagneticLink>
-        <CopyEmailButton email={profile.email} />
-      </div>
-
-      <div className="mt-8 flex gap-8 text-[17px]">
-        <a
-          href={profile.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="border-b border-line-strong pb-0.5 hover:border-mint hover:text-mint"
-        >
-          GitHub
-        </a>
-        <a
-          href={profile.linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="border-b border-line-strong pb-0.5 hover:border-mint hover:text-mint"
-        >
-          LinkedIn
-        </a>
-      </div>
+    <section id="contact" className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+      <SectionHeading index="06" command="./contact --open" title="Contact" />
+      <Reveal>
+        <TerminalWindow title="devyansh@portfolio: ~/contact">
+          <p className="font-sans text-base text-ink/90">
+            Email is the best way to reach me. If you are working on applied
+            ML, agents or computer vision, I would like to hear about it.
+          </p>
+          <ul className="mt-5 space-y-2">
+            {channels.map((c) => (
+              <li key={c.label} className="flex flex-wrap gap-x-4">
+                <span className="w-20 text-muted">{c.label}</span>
+                <a
+                  href={c.href}
+                  target={c.label === "email" ? undefined : "_blank"}
+                  rel={c.label === "email" ? undefined : "noopener noreferrer"}
+                  className="text-mint underline-offset-4 hover:underline"
+                >
+                  {c.value}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-6 text-muted">
+            <span className="text-mint">$</span> echo &quot;thanks for
+            visiting&quot;
+            <span className="caret" aria-hidden />
+          </p>
+        </TerminalWindow>
+      </Reveal>
     </section>
   );
 }

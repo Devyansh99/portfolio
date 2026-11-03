@@ -1,0 +1,97 @@
+"use client";
+
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { useMemo, useRef } from "react";
+import type { RefObject } from "react";
+import * as THREE from "three";
+import { mulberry32 } from "@/lib/rng";
+
+function Network() {
+  const group = useRef<THREE.Group>(null);
+  const inner = useRef<THREE.Mesh>(null);
+  const viewport = useThree((state) => state.viewport);
+  const baseX = viewport.aspect > 1.2 ? viewport.width * 0.22 : 0;
+
+  const positions = useMemo(() => {
+    const rand = mulberry32(7);
+    const count = 900;
+    const arr = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      const u = rand() * 2 - 1;
+      const theta = rand() * Math.PI * 2;
+      const r = 2.2 + rand() * 0.9;
+      const s = Math.sqrt(1 - u * u);
+      arr[i * 3] = r * s * Math.cos(theta);
+      arr[i * 3 + 1] = r * u;
+      arr[i * 3 + 2] = r * s * Math.sin(theta);
+    }
+    return arr;
+  }, []);
+
+  useFrame((state, delta) => {
+    const g = group.current;
+    if (g) {
+      g.rotation.y += delta * 0.08;
+      g.rotation.x = THREE.MathUtils.damp(
+        g.rotation.x,
+        state.pointer.y * 0.35,
+        3,
+        delta,
+      );
+      g.position.x = THREE.MathUtils.damp(
+        g.position.x,
+        baseX + state.pointer.x * 0.5,
+        3,
+        delta,
+      );
+    }
+    const m = inner.current;
+    if (m) {
+      m.rotation.y -= delta * 0.25;
+      m.rotation.z += delta * 0.12;
+    }
+  });
+
+  return (
+    <group ref={group}>
+      <mesh>
+        <icosahedronGeometry args={[1.6, 2]} />
+        <meshBasicMaterial color="#3dffb0" wireframe transparent opacity={0.22} />
+      </mesh>
+      <mesh ref={inner}>
+        <icosahedronGeometry args={[0.8, 0]} />
+        <meshBasicMaterial color="#ffb547" wireframe transparent opacity={0.55} />
+      </mesh>
+      <points>
+        <bufferGeometry>
+          <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        </bufferGeometry>
+        <pointsMaterial
+          color="#3dffb0"
+          size={0.03}
+          sizeAttenuation
+          transparent
+          opacity={0.85}
+        />
+      </points>
+    </group>
+  );
+}
+
+type HeroSceneProps = {
+  eventSource: RefObject<HTMLElement | null>;
+};
+
+export default function HeroScene({ eventSource }: HeroSceneProps) {
+  return (
+    <Canvas
+      dpr={[1, 1.5]}
+      camera={{ position: [0, 0, 6], fov: 50 }}
+      gl={{ antialias: false, powerPreference: "low-power" }}
+      eventSource={eventSource as RefObject<HTMLElement>}
+      eventPrefix="client"
+    >
+      <Network />
+    </Canvas>
+  );
+}

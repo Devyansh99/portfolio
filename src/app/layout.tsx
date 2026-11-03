@@ -1,30 +1,15 @@
 import type { Metadata } from "next";
-import {
-  Bricolage_Grotesque,
-  Instrument_Serif,
-  JetBrains_Mono,
-} from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const display = Bricolage_Grotesque({
-  variable: "--f-display",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  axes: ["opsz", "wdth"],
-  display: "swap",
 });
 
-const mono = JetBrains_Mono({
-  variable: "--f-mono",
+const jetbrains = JetBrains_Mono({
+  variable: "--font-jetbrains",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const serif = Instrument_Serif({
-  variable: "--f-serif",
-  subsets: ["latin"],
-  weight: "400",
-  style: ["italic"],
-  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -37,9 +22,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${display.variable} ${mono.variable} ${serif.variable} h-full antialiased`}
+      className={`${inter.variable} ${jetbrains.variable} h-full antialiased`}
     >
-      <body className="relative min-h-full bg-bg font-sans text-ink">
+      <body className="scanlines min-h-full flex flex-col bg-bg text-ink">
         {children}
       </body>
     </html>

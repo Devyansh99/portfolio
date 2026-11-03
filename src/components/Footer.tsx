@@ -1,12 +1,12 @@
-import { footer } from "@/data/copy";
+import { profile } from "@/data/profile";
 
 export function Footer() {
   return (
-    <footer className="relative z-10 border-t border-line px-5 py-6 md:px-10">
-      <div className="mx-auto flex max-w-[1360px] flex-wrap justify-between gap-2 font-mono text-xs text-muted">
-        <p>{footer.left}</p>
-        <p>{footer.right}</p>
-      </div>
+    <footer className="border-t border-line px-4 py-8 text-center font-mono text-xs text-muted sm:px-6">
+      <p>
+        <span className="text-mint">&gt;</span> {profile.name} · built in
+        Mohali with Next.js, Tailwind, Framer Motion, and three.js
+      </p>
     </footer>
   );
 }
