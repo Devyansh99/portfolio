@@ -91,10 +91,10 @@ export function CommandPalette({ onClose, onGo }: CommandPaletteProps) {
       },
       {
         id: "sudo",
-        label: "sudo hire devyansh",
-        keywords: "hire sudo",
+        label: "sudo connect devyansh",
+        keywords: "connect hire sudo contact",
         run: () => {
-          window.location.href = `mailto:${profile.email}?subject=sudo%20hire`;
+          window.location.href = `mailto:${profile.email}?subject=sudo%20connect`;
           return "permission granted. opening your mail client...";
         },
       },
