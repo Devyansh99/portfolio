@@ -22,7 +22,6 @@ export function SkillsTab() {
   const [skill, setSkill] = useState<string | null>(null);
   const [project, setProject] = useState<string | null>(null);
 
-  const focused = skill !== null || project !== null;
   const related = (s: string, p: string) =>
     skill === s || project === p || (skill === null && project === null);
 
@@ -95,13 +94,7 @@ export function SkillsTab() {
                       setSkill(s);
                       setProject(null);
                     }}
-                    className={`flex items-center transition-opacity ${
-                      focused &&
-                      skill !== s &&
-                      !(project && skillUsage[s].includes(project))
-                        ? "opacity-40"
-                        : ""
-                    }`}
+                    className="flex items-center"
                   >
                     <button
                       type="button"
@@ -134,7 +127,7 @@ export function SkillsTab() {
                           aria-hidden
                         >
                           <span
-                            className={`size-3.5 rounded-[3px] border transition ${
+                            className={`size-3.5 rounded-[3px] border transition-colors duration-100 ${
                               used
                                 ? hot
                                   ? "border-mint bg-mint shadow-[0_0_10px_rgba(61,255,176,0.6)]"
