@@ -38,7 +38,16 @@ export function Hud() {
   const tab = current.id;
   const [paletteOpen, setPaletteOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
   const firstRun = useRef(true);
+
+  const updateBar = () => {
+    const el = scrollRef.current;
+    const bar = barRef.current;
+    if (!el || !bar) return;
+    const max = el.scrollHeight - el.clientHeight;
+    bar.style.width = max > 8 ? `${(el.scrollTop / max) * 100}%` : "0%";
+  };
 
   useEffect(() => {
     document.documentElement.setAttribute("data-tab", tab);
@@ -47,6 +56,7 @@ export function Hud() {
         ? "Devyansh Agarwal, AI engineer"
         : `${current.label} · Devyansh Agarwal`;
     scrollRef.current?.scrollTo({ top: 0, left: 0 });
+    updateBar();
     if (firstRun.current) {
       firstRun.current = false;
       return;
@@ -94,7 +104,14 @@ export function Hud() {
         <main className="min-h-0">
           <Frame className="h-full border border-mint/15 bg-bg/60 backdrop-blur-[2px]">
             <div
+              ref={barRef}
+              aria-hidden
+              className="pointer-events-none absolute left-0 top-0 z-20 h-0.5 bg-mint shadow-[0_0_8px_var(--mint)]"
+              style={{ width: 0 }}
+            />
+            <div
               ref={scrollRef}
+              onScroll={updateBar}
               className="hud-scroll absolute inset-0 overflow-y-auto"
             >
               {tabs.map((t) => {

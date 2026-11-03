@@ -47,6 +47,20 @@ export function SkillsTab() {
         {readout}
       </p>
 
+      <dl className="mb-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
+        {[
+          [String(projects.length), "projects"],
+          [String(skillCount), "skills"],
+          ["1", "paper under review"],
+          [String(achievements.length), "awards and courses"],
+        ].map(([n, label]) => (
+          <div key={label} className="border border-line bg-surface-2 px-3 py-2">
+            <dd className="text-2xl font-bold text-mint">{n}</dd>
+            <dt className="tag">{label}</dt>
+          </div>
+        ))}
+      </dl>
+
       <div
         className="hud-scroll overflow-x-auto"
         onPointerLeave={() => {
