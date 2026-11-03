@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { profile } from "@/data/profile";
 import { Frame } from "./Frame";
@@ -21,12 +22,19 @@ export function LeftPanel({ className = "" }: { className?: string }) {
 
   return (
     <aside className={`flex-col gap-5 ${className}`}>
-      <Frame className="aspect-[4/3] w-full shrink-0 bg-surface">
-        <div className="absolute inset-2 flex items-center justify-center overflow-hidden bg-gradient-to-br from-mint/15 via-transparent to-amber/10">
-          <span className="caps text-5xl font-bold text-mint/90">DA</span>
+      <Frame className="aspect-square w-full shrink-0 bg-surface">
+        <div className="absolute inset-2 overflow-hidden">
+          <Image
+            src="/devyansh.jpg"
+            alt="Portrait of Devyansh Agarwal"
+            fill
+            priority
+            sizes="240px"
+            className="object-cover object-[50%_20%]"
+          />
           <span
             aria-hidden
-            className="absolute inset-x-0 top-1/2 h-px bg-mint/30"
+            className="absolute inset-0 bg-gradient-to-t from-bg/70 via-transparent to-mint/10"
           />
         </div>
       </Frame>

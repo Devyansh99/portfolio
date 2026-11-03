@@ -1,8 +1,21 @@
+import Image from "next/image";
 import { profile } from "@/data/profile";
+import { Frame } from "../Frame";
 
 export function AboutTab() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-8">
+      <Frame className="mx-auto mb-5 h-44 w-36 shrink-0 bg-surface lg:hidden">
+        <div className="absolute inset-1.5 overflow-hidden">
+          <Image
+            src="/devyansh.jpg"
+            alt="Portrait of Devyansh Agarwal"
+            fill
+            sizes="144px"
+            className="object-cover object-[50%_20%]"
+          />
+        </div>
+      </Frame>
       <p className="caps text-center text-sm font-semibold tracking-[0.2em] text-ink">
         Who is {profile.name}
       </p>
