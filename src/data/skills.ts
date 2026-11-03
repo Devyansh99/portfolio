@@ -20,7 +20,18 @@ export const skillGroups = [
   },
   {
     command: "frameworks --tools",
-    items: ["PyTorch", "TensorFlow", "Scikit-learn", "LangChain", "LangGraph"],
+    items: [
+      "PyTorch",
+      "TensorFlow",
+      "Scikit-learn",
+      "XGBoost",
+      "Optuna",
+      "YOLOv8",
+      "Prophet",
+      "LangChain",
+      "LangGraph",
+      "Gemini",
+    ],
   },
   {
     command: "backend --apis",
@@ -32,7 +43,7 @@ export const skillGroups = [
   },
   {
     command: "data --storage",
-    items: ["PostgreSQL", "pgvector", "MongoDB", "Redis", "Supabase"],
+    items: ["PostgreSQL", "pgvector", "Weaviate", "MongoDB", "Redis", "Supabase"],
   },
   {
     command: "cloud --devops",
@@ -40,7 +51,7 @@ export const skillGroups = [
   },
   {
     command: "networking",
-    items: ["Routing (OSPF, EIGRP)", "VLANs", "ACLs", "NAT"],
+    items: ["Cisco Packet Tracer", "Routing (OSPF, EIGRP)", "VLANs", "ACLs", "NAT"],
   },
 ] as const;
 
@@ -74,6 +85,13 @@ export const skillUsage: Record<string, string[]> = {
   PyTorch: ["higan", "adaptivebandit"],
   "Scikit-learn": ["glioblastoma"],
   LangChain: ["acadika"],
+  XGBoost: ["glioblastoma"],
+  Optuna: ["glioblastoma"],
+  YOLOv8: ["sadakvision"],
+  Prophet: ["sadakvision"],
+  Gemini: ["cognalytix"],
+  Weaviate: ["acadika"],
+  "Cisco Packet Tracer": ["digital-dorm-war"],
   FastAPI: ["cognalytix", "acadika"],
   AWS: ["sadakvision"],
   React: ["cognalytix", "acadika"],
