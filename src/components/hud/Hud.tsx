@@ -107,7 +107,7 @@ export function Hud() {
             <div
               ref={barRef}
               aria-hidden
-              className="pointer-events-none absolute left-0 top-0 z-20 h-0.5 bg-mint shadow-[0_0_8px_var(--mint)]"
+              className="pointer-events-none absolute bottom-0 left-0 z-20 h-0.5 bg-mint shadow-[0_0_8px_var(--mint)]"
               style={{ width: 0 }}
             />
             <div
