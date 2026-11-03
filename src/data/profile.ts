@@ -14,11 +14,11 @@ export const profile = {
     },
     {
       label: "SadakVision",
-      text: "Since January 2025 I've worked on SadakVision, where a phone's accelerometer decides when to record the road. I built the Prophet-based anomaly trigger and fine-tuned the YOLOv8m detector. We presented the work at INDIS 2026 at IIT Guwahati, and the paper is now under review.",
+      text: "Since January 2025 I've been part of SadakVision, a product that turns an ordinary smartphone on a car's windshield into a road inspector. It notices rough patches, saves a short clip of the road, and shows cities on a map where the damage is and how bad it is. We presented the work at INDIS 2026 at IIT Guwahati, and the paper is now under review.",
     },
     {
       label: "Now",
-      text: "In June and July 2026 I interned at Kaksha AI, building analytics inside a chat product across 7 batches and 500+ students. Right now I'm building Cognalytix, a workspace where you upload a spreadsheet and then explore it, query it and train models on it.",
+      text: "I'll be joining IndiaMART InterMESH for my semester-long internship. Until then I'm building projects, mainly Cognalytix, a workspace where you upload a spreadsheet and then explore it, query it and train models on it.",
     },
   ],
   facts: [

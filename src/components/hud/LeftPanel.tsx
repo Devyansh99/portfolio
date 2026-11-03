@@ -17,6 +17,7 @@ function Field({ label, value }: { label: string; value: string }) {
 
 export function LeftPanel({ className = "" }: { className?: string }) {
   const [open, setOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   return (
     <aside className={`flex-col gap-5 ${className}`}>
@@ -39,6 +40,28 @@ export function LeftPanel({ className = "" }: { className?: string }) {
         <p className="caps mt-1 border border-mint/40 bg-mint/10 px-2 py-1.5 text-sm font-semibold text-mint">
           {profile.status}
         </p>
+      </div>
+
+      <div>
+        <p className="tag">Gmail</p>
+        <p className="mt-1 select-all break-all font-mono text-[13px] text-ink">
+          {profile.email}
+        </p>
+        <button
+          type="button"
+          onClick={() => {
+            navigator.clipboard
+              .writeText(profile.email)
+              .then(() => {
+                setCopied(true);
+                setTimeout(() => setCopied(false), 1500);
+              })
+              .catch(() => {});
+          }}
+          className="tag mt-1 hover:text-mint"
+        >
+          {copied ? "copied ✓" : "copy address"}
+        </button>
       </div>
 
       <div>

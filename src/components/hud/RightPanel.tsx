@@ -1,9 +1,6 @@
 "use client";
 
-import { projects } from "@/data/projects";
 import { setSetting, useSetting } from "@/lib/settings";
-
-const quest = projects.find((p) => p.status === "in progress") ?? projects[0];
 
 function Toggle({
   label,
@@ -42,40 +39,19 @@ export function RightPanel({ className = "" }: { className?: string }) {
   const crt = useSetting("crt");
 
   return (
-    <aside className={`flex-col justify-between ${className}`}>
-      <div className="border-l-2 border-mint/70 pl-3">
-        <p className="caps -ml-3 -mr-0 bg-mint/15 px-3 py-1 text-lg font-bold text-mint">
-          Active quest
-        </p>
-        <p className="tag mt-1">the current build</p>
-
-        <p className="tag mt-5">Quest name</p>
-        <p className="caps mt-1 text-lg font-semibold text-mint">
-          {quest.title}
-        </p>
-
-        <p className="tag mt-5">Goal</p>
-        <p className="mt-1 text-xs leading-relaxed text-ink/80">
-          {quest.summary}
-        </p>
-
-        <p className="tag mt-5">Built with</p>
-        <ul className="mt-2 flex flex-wrap gap-1.5">
-          {quest.stack.slice(0, 4).map((s) => (
-            <li
-              key={s}
-              className="border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-[11px] text-muted"
-            >
-              {s}
-            </li>
-          ))}
-        </ul>
-      </div>
-
+    <aside className={`flex-col justify-end ${className}`}>
       <div>
         <p className="tag mb-1">Visual settings</p>
-        <Toggle label="Motion & 3D" on={motion} onChange={(v) => setSetting("motion", v)} />
-        <Toggle label="Scanlines" on={crt} onChange={(v) => setSetting("crt", v)} />
+        <Toggle
+          label="Motion & 3D"
+          on={motion}
+          onChange={(v) => setSetting("motion", v)}
+        />
+        <Toggle
+          label="Scanlines"
+          on={crt}
+          onChange={(v) => setSetting("crt", v)}
+        />
       </div>
     </aside>
   );

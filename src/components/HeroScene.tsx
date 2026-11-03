@@ -9,6 +9,7 @@ import { mulberry32 } from "@/lib/rng";
 function Network({ animate }: { animate: boolean }) {
   const group = useRef<THREE.Group>(null);
   const inner = useRef<THREE.Mesh>(null);
+  const spin = useRef(0.6);
 
   const positions = useMemo(() => {
     const rand = mulberry32(7);
@@ -30,17 +31,30 @@ function Network({ animate }: { animate: boolean }) {
     if (!animate) return;
     const g = group.current;
     if (g) {
-      g.rotation.y += delta * 0.08;
-      g.rotation.x = THREE.MathUtils.damp(
-        g.rotation.x,
-        0.25 + state.pointer.y * 0.35,
-        3,
-        delta,
-      );
+      spin.current += delta * 0.08;
+      const { pointer, viewport } = state;
       g.position.x = THREE.MathUtils.damp(
         g.position.x,
-        state.pointer.x * 0.5,
-        3,
+        pointer.x * viewport.width * 0.22,
+        4,
+        delta,
+      );
+      g.position.y = THREE.MathUtils.damp(
+        g.position.y,
+        pointer.y * viewport.height * 0.22,
+        4,
+        delta,
+      );
+      g.rotation.y = THREE.MathUtils.damp(
+        g.rotation.y,
+        spin.current + pointer.x * 0.7,
+        4,
+        delta,
+      );
+      g.rotation.x = THREE.MathUtils.damp(
+        g.rotation.x,
+        -pointer.y * 0.6,
+        4,
         delta,
       );
     }
@@ -53,7 +67,7 @@ function Network({ animate }: { animate: boolean }) {
 
   return (
     <group position={[0, -0.35, 0]}>
-      <group ref={group} rotation={[0.25, 0.6, 0]}>
+      <group ref={group} rotation={[0.2, 0.6, 0]}>
         <mesh>
           <icosahedronGeometry args={[1.6, 2]} />
           <meshBasicMaterial color="#3dffb0" wireframe transparent opacity={0.22} />
