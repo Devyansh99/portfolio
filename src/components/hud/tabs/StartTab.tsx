@@ -14,7 +14,7 @@ function Rings() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute left-1/2 top-[54%] aspect-square w-[min(78%,30rem)] -translate-x-1/2 -translate-y-1/2"
+      className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[min(66%,25rem)] -translate-x-1/2 -translate-y-1/2"
     >
       <svg
         viewBox="-100 -100 200 200"

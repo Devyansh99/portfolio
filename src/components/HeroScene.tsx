@@ -37,13 +37,13 @@ function Network({ pointer }: { pointer: RefObject<Pointer> }) {
       const { viewport } = state;
       g.position.x = THREE.MathUtils.damp(
         g.position.x,
-        p.x * viewport.width * 0.2,
+        p.x * viewport.width * 0.12,
         4,
         delta,
       );
       g.position.y = THREE.MathUtils.damp(
         g.position.y,
-        p.y * viewport.height * 0.2,
+        p.y * viewport.height * 0.12,
         4,
         delta,
       );
@@ -63,7 +63,7 @@ function Network({ pointer }: { pointer: RefObject<Pointer> }) {
   });
 
   return (
-    <group position={[0, -0.35, 0]}>
+    <group scale={0.85}>
       <group ref={group} rotation={[0.2, 0.6, 0]}>
         <mesh>
           <icosahedronGeometry args={[1.6, 2]} />
