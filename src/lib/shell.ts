@@ -23,7 +23,7 @@ export type ShellLine = {
 export type ShellAction =
   | { type: "go"; tab: TabName; sub?: string }
   | { type: "open"; url: string }
-  | { type: "mail"; subject?: string }
+  | { type: "connect" }
   | { type: "clear" }
   | { type: "palette" }
   | { type: "close" }
@@ -670,7 +670,9 @@ export function run(raw: string, ctx: ShellContext): ShellResult {
       if (!target) return { lines: [err("open: open what? try 'open github'")] };
       if (arg === "github") return { lines: [text("opening github...", "muted")], action: { type: "open", url: profile.github } };
       if (arg === "linkedin") return { lines: [text("opening linkedin...", "muted")], action: { type: "open", url: profile.linkedin } };
-      if (arg === "email" || arg === "mail") return { lines: [text("opening your mail app...", "muted")], action: { type: "mail" } };
+      if (arg === "email" || arg === "mail") {
+        return { lines: [text("taking you to the contact form...", "muted")], action: { type: "connect" } };
+      }
       const path = resolve(cwd, target);
       const n = path ? nodeAt(path) : undefined;
       if (path && n) {
@@ -728,8 +730,11 @@ export function run(raw: string, ctx: ShellContext): ShellResult {
     case "sudo": {
       if (arg === "connect devyansh" || arg === "connect") {
         return {
-          lines: [text("permission granted. opening your mail client...", "mint")],
-          action: { type: "mail", subject: "sudo connect" },
+          lines: [
+            text("permission granted. taking you to the contact form...", "mint"),
+            text(`or write directly: ${profile.email}`, "muted"),
+          ],
+          action: { type: "connect" },
         };
       }
       return { lines: [err("visitor is not in the sudoers file. this incident will be reported.")] };

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { KeyboardEvent, RefObject } from "react";
-import { profile } from "@/data/profile";
+import { focusContact } from "@/lib/contact";
 import { pushHistory, useShellHistory } from "@/lib/history";
 import {
   commandGroups,
@@ -62,9 +62,9 @@ export function Shell({
     if (!a) return;
     if (a.type === "go") onGo(a.tab, a.sub);
     if (a.type === "open") window.open(a.url, "_blank", "noopener,noreferrer");
-    if (a.type === "mail") {
-      const q = a.subject ? `?subject=${encodeURIComponent(a.subject)}` : "";
-      window.location.assign(`mailto:${profile.email}${q}`);
+    if (a.type === "connect") {
+      onGo("about");
+      focusContact();
     }
     if (a.type === "clear") setEntries([]);
     if (a.type === "palette") onPalette();

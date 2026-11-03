@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
 import { profile } from "@/data/profile";
+import { focusContact } from "@/lib/contact";
 import { tabs, type TabId } from "./TabBar";
 
 type Command = {
@@ -51,10 +52,12 @@ export function CommandPalette({ onClose, onGo }: CommandPaletteProps) {
       },
       {
         id: "send-email",
-        label: "send email",
-        keywords: "contact hire mailto",
+        label: "send a message",
+        keywords: "contact hire email form",
         run: () => {
-          window.location.href = `mailto:${profile.email}`;
+          onGo("about");
+          onClose();
+          focusContact();
         },
       },
       {
@@ -96,8 +99,9 @@ export function CommandPalette({ onClose, onGo }: CommandPaletteProps) {
         label: "sudo connect devyansh",
         keywords: "connect hire sudo contact",
         run: () => {
-          window.location.href = `mailto:${profile.email}?subject=sudo%20connect`;
-          return "permission granted. opening your mail client...";
+          onGo("about");
+          onClose();
+          focusContact();
         },
       },
       {
