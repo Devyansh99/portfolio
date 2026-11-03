@@ -10,7 +10,7 @@ function Field({ label, value }: { label: string; value: string }) {
   return (
     <div>
       <p className="tag">{label}</p>
-      <p className="caps mt-0.5 text-base font-semibold leading-tight text-mint">
+      <p className="mt-0.5 text-base font-semibold leading-tight text-mint">
         {value}
       </p>
     </div>
@@ -33,7 +33,7 @@ export function LeftPanel({ className = "" }: { className?: string }) {
 
       <div>
         <p className="tag">status</p>
-        <p className="caps mt-1 flex items-center gap-2 border border-mint/40 bg-mint/10 px-2 py-1.5 text-sm font-semibold text-mint">
+        <p className="mt-1 flex items-center gap-2 border border-mint/40 bg-mint/10 px-2 py-1.5 text-sm font-semibold text-mint">
           <span aria-hidden className="size-2 shrink-0 animate-pulse rounded-full bg-mint" />
           {profile.status}
         </p>

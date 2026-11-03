@@ -97,11 +97,11 @@ export function StartTab({ active }: { active: boolean }) {
           </pre>
           <h1
             tabIndex={-1}
-            className="text-3xl font-bold tracking-tight text-ink sm:text-5xl @xl:sr-only"
+            className="mt-2 text-3xl font-bold tracking-tight text-ink sm:text-4xl @xl:text-2xl"
           >
-            {profile.name.toLowerCase()}
+            {profile.name}
           </h1>
-          <p className="tag mt-2">ai engineer · cs &amp; ai, plaksha</p>
+          <p className="tag mt-2">AI engineer · CS &amp; AI, Plaksha</p>
           <Tagline />
         </div>
 
@@ -112,15 +112,15 @@ export function StartTab({ active }: { active: boolean }) {
           <dl className="grid max-w-sm grid-cols-2 gap-x-6 gap-y-3 text-left">
             <div>
               <dt className="tag">Occupation</dt>
-              <dd className="caps font-semibold text-mint">{profile.occupation}</dd>
+              <dd className="font-semibold text-mint">{profile.occupation}</dd>
             </div>
             <div>
               <dt className="tag">Corporation</dt>
-              <dd className="caps font-semibold text-mint">{profile.corporation}</dd>
+              <dd className="font-semibold text-mint">{profile.corporation}</dd>
             </div>
             <div className="col-span-2">
               <dt className="tag">Status</dt>
-              <dd className="caps font-semibold text-mint">{profile.status}</dd>
+              <dd className="font-semibold text-mint">{profile.status}</dd>
             </div>
           </dl>
         </div>
