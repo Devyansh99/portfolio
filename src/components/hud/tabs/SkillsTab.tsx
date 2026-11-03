@@ -58,7 +58,7 @@ export function SkillsTab() {
       </dl>
 
       <div
-        className="hud-scroll overflow-x-auto"
+        className="hud-scroll overflow-x-auto overflow-y-hidden py-1"
         onPointerLeave={() => {
           setSkill(null);
           setProject(null);
@@ -137,16 +137,14 @@ export function SkillsTab() {
                           aria-hidden
                         >
                           <span
-                            className={`text-sm leading-none transition-colors duration-100 ${
+                            className={`size-3.5 rounded-[3px] border transition-colors duration-100 ${
                               used
                                 ? hot
-                                  ? "text-mint [text-shadow:0_0_8px_rgba(61,255,176,0.7)]"
-                                  : "text-mint/35"
-                                : "text-line"
+                                  ? "border-mint bg-mint shadow-[0_0_10px_rgba(61,255,176,0.6)]"
+                                  : "border-mint/30 bg-mint/20"
+                                : "border-line bg-surface-2"
                             }`}
-                          >
-                            {used ? "■" : "·"}
-                          </span>
+                          />
                         </span>
                       );
                     })}

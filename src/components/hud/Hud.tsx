@@ -103,7 +103,7 @@ export function Hud() {
         <LeftPanel className="hud-scroll hidden min-h-0 overflow-y-auto pr-1 pt-3 lg:flex" />
 
         <main className="min-h-0">
-          <Frame title={`~/${tab}`} className="h-full bg-bg/60 backdrop-blur-[2px]">
+          <Frame title={`~/${tab}`} className="h-full bg-bg/60">
             <div
               ref={barRef}
               aria-hidden
