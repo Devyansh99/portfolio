@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { profile } from "@/data/profile";
+import { ContactIcon } from "./ContactIcons";
 import { Frame } from "./Frame";
 
 function Field({ label, value }: { label: string; value: string }) {
@@ -45,7 +46,8 @@ export function LeftPanel({ className = "" }: { className?: string }) {
 
       <div>
         <p className="tag">Status</p>
-        <p className="caps mt-1 border border-mint/40 bg-mint/10 px-2 py-1.5 text-sm font-semibold text-mint">
+        <p className="caps mt-1 flex items-center gap-2 border border-mint/40 bg-mint/10 px-2 py-1.5 text-sm font-semibold text-mint">
+          <span aria-hidden className="size-2 shrink-0 animate-pulse rounded-full bg-mint" />
           {profile.status}
         </p>
       </div>
@@ -88,8 +90,14 @@ export function LeftPanel({ className = "" }: { className?: string }) {
         {open && (
           <ul className="mt-2 space-y-1 border-l border-mint/40 pl-3 font-mono text-xs">
             <li>
-              <a className="text-ink hover:text-mint" href={`mailto:${profile.email}`}>
-                email
+              <a
+                className="text-ink hover:text-mint"
+                href={`mailto:${profile.email}`}
+              >
+                <span className="inline-flex items-center gap-2">
+                  <ContactIcon name="gmail" size={14} />
+                  email
+                </span>
               </a>
             </li>
             <li>
@@ -99,7 +107,10 @@ export function LeftPanel({ className = "" }: { className?: string }) {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                github ↗
+                <span className="inline-flex items-center gap-2">
+                  <ContactIcon name="github" size={14} />
+                  github ↗
+                </span>
               </a>
             </li>
             <li>
@@ -109,7 +120,10 @@ export function LeftPanel({ className = "" }: { className?: string }) {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                linkedin ↗
+                <span className="inline-flex items-center gap-2">
+                  <ContactIcon name="linkedin" size={14} />
+                  linkedin ↗
+                </span>
               </a>
             </li>
           </ul>

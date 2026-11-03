@@ -1,7 +1,7 @@
 export const skillGroups = [
   {
     command: "languages --db",
-    items: ["Python", "C++", "SQL", "TypeScript"],
+    items: ["Python", "C++", "SQL", "TypeScript", "JavaScript"],
   },
   {
     command: "ai --ml",
@@ -20,21 +20,23 @@ export const skillGroups = [
   },
   {
     command: "frameworks --tools",
-    items: [
-      "PyTorch",
-      "TensorFlow",
-      "Scikit-learn",
-      "LangChain",
-      "LangGraph",
-      "FastAPI",
-      "Docker",
-      "AWS",
-      "Git",
-    ],
+    items: ["PyTorch", "TensorFlow", "Scikit-learn", "LangChain", "LangGraph"],
   },
   {
-    command: "web --apis",
-    items: ["React", "Next.js", "Tailwind CSS", "REST APIs"],
+    command: "backend --apis",
+    items: ["FastAPI", "Node.js", "Express.js", "REST APIs"],
+  },
+  {
+    command: "web",
+    items: ["React", "Next.js", "Tailwind CSS"],
+  },
+  {
+    command: "data --storage",
+    items: ["PostgreSQL", "pgvector", "MongoDB", "Redis", "Supabase"],
+  },
+  {
+    command: "cloud --devops",
+    items: ["Docker", "AWS", "Azure", "Git", "CI/CD"],
   },
   {
     command: "networking",

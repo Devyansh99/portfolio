@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { profile } from "@/data/profile";
 import { Frame } from "../Frame";
+import { ContactComposer } from "../ContactComposer";
 
 export function AboutTab() {
   return (
@@ -41,30 +42,7 @@ export function AboutTab() {
         ))}
       </dl>
 
-      <div className="mt-8 grid gap-2 sm:grid-cols-[9rem_1fr] sm:gap-6">
-        <p className="tag sm:text-right">Contact</p>
-        <div className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-sm">
-          <a className="text-mint underline-offset-4 hover:underline" href={`mailto:${profile.email}`}>
-            {profile.email}
-          </a>
-          <a
-            className="text-mint underline-offset-4 hover:underline"
-            href={profile.github}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            github ↗
-          </a>
-          <a
-            className="text-mint underline-offset-4 hover:underline"
-            href={profile.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            linkedin ↗
-          </a>
-        </div>
-      </div>
+      <ContactComposer />
     </div>
   );
 }

@@ -5,12 +5,18 @@ import { projects } from "@/data/projects";
 import { skillGroups, skillUsage } from "@/data/skills";
 import { achievements } from "@/data/timeline";
 import { projectCodes as codes } from "@/data/codes";
+import { SkillGlyph } from "../SkillGlyph";
 
 const titleOf = (id: string) => projects.find((p) => p.id === id)?.title ?? id;
 
-const alsoUse = skillGroups.flatMap((g) =>
-  g.items.filter((s) => !skillUsage[s]),
-);
+const toolbox = skillGroups
+  .map((g) => ({
+    name: g.command.split(" ")[0],
+    items: g.items.filter((s) => !skillUsage[s]),
+  }))
+  .filter((g) => g.items.length > 0);
+
+const skillCount = skillGroups.reduce((n, g) => n + g.items.length, 0);
 
 export function SkillsTab() {
   const [skill, setSkill] = useState<string | null>(null);
@@ -108,10 +114,14 @@ export function SkillsTab() {
                         setSkill(s);
                         setProject(null);
                       }}
-                      className={`sticky left-0 z-10 w-40 shrink-0 bg-bg py-1.5 text-left sm:w-52 ${
+                      className={`sticky left-0 z-10 flex w-40 shrink-0 items-center gap-2 bg-bg py-1.5 text-left sm:w-52 ${
                         skill === s ? "text-mint" : "text-ink"
                       }`}
                     >
+                      <SkillGlyph
+                        skill={s}
+                        className={skill === s ? "text-mint" : "text-muted"}
+                      />
                       {s}
                     </button>
                     {projects.map((p) => {
@@ -153,18 +163,31 @@ export function SkillsTab() {
       </dl>
 
       <p className="mt-6 border-t border-line pt-4 text-muted">
-        <span className="text-mint">$</span> also --comfortable-with
+        <span className="text-mint">$</span> ls --toolbox{" "}
+        <span className="text-xs">({skillCount} skills)</span>
       </p>
-      <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-2">
-        {alsoUse.map((s) => (
-          <li
-            key={s}
-            className="border border-line bg-surface-2 px-2.5 py-1 text-ink"
-          >
-            {s}
-          </li>
+      <div className="mt-3 space-y-4">
+        {toolbox.map((g) => (
+          <div key={g.name}>
+            <p className="pb-1.5 text-xs text-amber"># {g.name}</p>
+            <ul className="flex flex-wrap gap-2">
+              {g.items.map((s) => (
+                <li
+                  key={s}
+                  className="group flex items-center gap-2 border border-line bg-surface-2 px-2.5 py-1.5 text-ink transition-colors hover:border-mint/60 hover:text-mint"
+                >
+                  <SkillGlyph
+                    skill={s}
+                    size={16}
+                    className="text-muted transition-colors group-hover:text-mint"
+                  />
+                  {s}
+                </li>
+              ))}
+            </ul>
+          </div>
         ))}
-      </ul>
+      </div>
 
       <p className="mt-8 border-t border-line pt-4 text-muted">
         <span className="text-mint">$</span> git tag --list
