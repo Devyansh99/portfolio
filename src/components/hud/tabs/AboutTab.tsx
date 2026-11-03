@@ -16,9 +16,12 @@ export function AboutTab() {
           />
         </div>
       </Frame>
-      <p className="caps text-center text-sm font-semibold tracking-[0.2em] text-ink">
+      <h2
+        tabIndex={-1}
+        className="caps text-center text-sm font-semibold tracking-[0.2em] text-ink"
+      >
         Who is {profile.name}
-      </p>
+      </h2>
 
       <div className="mt-8 space-y-8">
         {profile.bio.map((b) => (

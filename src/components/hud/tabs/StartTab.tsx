@@ -2,10 +2,10 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import type { PointerEvent } from "react";
 import { profile } from "@/data/profile";
-import { useWebGL2 } from "@/lib/capabilities";
+import { useDeviceTier, useWebGL2 } from "@/lib/capabilities";
 import { Frame } from "../Frame";
 import { Tagline } from "../Tagline";
 
@@ -50,6 +50,8 @@ function Rings() {
 
 export function StartTab({ active }: { active: boolean }) {
   const gl = useWebGL2();
+  const tier = useDeviceTier();
+  const [ready, setReady] = useState(false);
   const pointer = useRef({ x: 0, y: 0 });
 
   const onMove = (e: PointerEvent<HTMLDivElement>) => {
@@ -71,15 +73,31 @@ export function StartTab({ active }: { active: boolean }) {
     >
       <div className="bg-grid absolute inset-0" aria-hidden />
       <Rings />
-      {gl && active && (
-        <div className="absolute inset-0" aria-hidden>
-          <HeroScene pointer={pointer} />
+      {gl && (
+        <div
+          aria-hidden
+          className={`absolute inset-0 transition-opacity duration-700 ${
+            ready ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <HeroScene
+            pointer={pointer}
+            active={active}
+            low={tier === "low"}
+            onReady={() => setReady(true)}
+          />
         </div>
       )}
 
       <div className="relative flex h-full flex-col items-center justify-between px-5 py-8 text-center">
         <div>
-          <h1 className="tag">{profile.name}</h1>
+          <h1
+            tabIndex={-1}
+            className="caps text-3xl font-bold tracking-wide text-ink sm:text-5xl"
+          >
+            {profile.name}
+          </h1>
+          <p className="tag mt-1">AI engineer · CS &amp; AI, Plaksha</p>
           <Tagline />
         </div>
 

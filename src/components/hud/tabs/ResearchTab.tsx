@@ -3,19 +3,19 @@ import { paper } from "@/data/research";
 export function ResearchTab() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-8">
-      <p className="caps text-center text-sm font-semibold tracking-[0.2em] text-ink">
+      <h2
+        tabIndex={-1}
+        className="caps text-center text-sm font-semibold tracking-[0.2em] text-ink"
+      >
         Research
-      </p>
+      </h2>
 
-      <div className="mt-6 flex flex-wrap items-center gap-3">
-        <span className="caps inline-flex items-center gap-2 border border-amber/60 bg-amber/10 px-3 py-1 text-sm font-bold text-amber">
-          <span className="size-2 rounded-full bg-amber" aria-hidden />
-          {paper.status}
-        </span>
-        <span className="font-mono text-xs text-muted">{paper.venue}</span>
-      </div>
+      <span className="caps mt-6 inline-flex items-center gap-2 border border-amber/60 bg-amber/10 px-3 py-1 text-sm font-bold text-amber">
+        <span className="size-2 rounded-full bg-amber" aria-hidden />
+        {paper.status}
+      </span>
 
-      <h3 className="caps mt-5 text-3xl font-bold leading-tight text-ink sm:text-4xl">
+      <h3 className="mt-5 font-display text-2xl font-bold leading-tight text-ink sm:text-4xl">
         {paper.title}
       </h3>
       <p className="mt-3 text-sm text-ink/80">
@@ -31,10 +31,11 @@ export function ResearchTab() {
         ))}
       </p>
       <p className="mt-1 font-mono text-xs text-muted">{paper.affiliation}</p>
+      <p className="mt-2 text-xs leading-relaxed text-muted">{paper.venue}</p>
 
       <section className="mt-10">
         <h4 className="tag text-mint">In plain words</h4>
-        <div className="mt-3 grid gap-px border border-line bg-line md:grid-cols-3">
+        <div className="mt-3 grid gap-px border border-line bg-line xl:grid-cols-3">
           {paper.plain.map((p) => (
             <div key={p.label} className="bg-surface p-5">
               <p className="caps text-lg font-bold text-amber">{p.label}</p>
@@ -63,10 +64,10 @@ export function ResearchTab() {
               <p className="mt-2 text-[13px] leading-relaxed text-ink/75">
                 {s.text}
               </p>
-              {i < paper.pipeline.length - 1 && (
+              {i % 3 !== 2 && i < paper.pipeline.length - 1 && (
                 <span
                   aria-hidden
-                  className="absolute -right-2.5 top-1/2 z-10 hidden -translate-y-1/2 bg-bg px-0.5 font-mono text-mint lg:block [&:nth-child(3n)]:hidden"
+                  className="absolute -right-2.5 top-1/2 z-10 hidden -translate-y-1/2 bg-bg px-0.5 font-mono text-mint lg:block"
                 >
                   →
                 </span>
@@ -111,8 +112,8 @@ export function ResearchTab() {
             {l.label} ↗
           </a>
         ))}
-        <span className="border border-dashed border-line px-4 py-2 text-muted">
-          preprint: available once published
+        <span className="self-center text-xs text-muted">
+          Preprint once published.
         </span>
       </div>
     </div>

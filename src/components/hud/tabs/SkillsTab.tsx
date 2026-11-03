@@ -4,16 +4,7 @@ import { useState } from "react";
 import { projects } from "@/data/projects";
 import { skillGroups, skillUsage } from "@/data/skills";
 import { achievements } from "@/data/timeline";
-
-const codes: Record<string, string> = {
-  sadakvision: "SV",
-  cognalytix: "CX",
-  acadika: "AC",
-  higan: "HG",
-  adaptivebandit: "AB",
-  glioblastoma: "GB",
-  "digital-dorm-war": "DD",
-};
+import { projectCodes as codes } from "@/data/codes";
 
 const titleOf = (id: string) => projects.find((p) => p.id === id)?.title ?? id;
 
@@ -40,9 +31,12 @@ export function SkillsTab() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 font-mono text-sm sm:px-8">
-      <p className="caps text-center text-sm font-semibold tracking-[0.2em] text-ink">
+      <h2
+        tabIndex={-1}
+        className="caps text-center text-sm font-semibold tracking-[0.2em] text-ink"
+      >
         Skill matrix loaded.
-      </p>
+      </h2>
       <p className="mb-5 mt-4 min-h-5 text-mint" aria-live="polite">
         {"> "}
         {readout}
@@ -57,7 +51,7 @@ export function SkillsTab() {
       >
         <div className="min-w-[22rem]">
           <div className="flex items-end border-b border-line pb-2">
-            <div className="w-40 shrink-0 text-muted sm:w-52">skill</div>
+            <div className="sticky left-0 z-10 w-40 shrink-0 bg-bg text-muted sm:w-52">skill</div>
             {projects.map((p) => (
               <button
                 key={p.id}
@@ -105,11 +99,16 @@ export function SkillsTab() {
                   >
                     <button
                       type="button"
+                      aria-label={`${s}: ${(skillUsage[s] ?? []).map(titleOf).join(", ")}`}
                       onFocus={() => {
                         setSkill(s);
                         setProject(null);
                       }}
-                      className={`w-40 shrink-0 py-1.5 text-left sm:w-52 ${
+                      onClick={() => {
+                        setSkill(s);
+                        setProject(null);
+                      }}
+                      className={`sticky left-0 z-10 w-40 shrink-0 bg-bg py-1.5 text-left sm:w-52 ${
                         skill === s ? "text-mint" : "text-ink"
                       }`}
                     >

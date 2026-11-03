@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+
 export type TabId =
   | "start"
   | "logs"
@@ -22,10 +26,19 @@ type TabBarProps = {
 };
 
 export function TabBar({ tab, onSelect, className = "" }: TabBarProps) {
+  const ref = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    ref.current
+      ?.querySelector('[aria-current="page"]')
+      ?.scrollIntoView({ inline: "nearest", block: "nearest" });
+  }, [tab]);
+
   return (
     <nav
+      ref={ref}
       aria-label="Sections"
-      className={`hud-scroll flex gap-1.5 overflow-x-auto lg:grid lg:grid-cols-6 lg:overflow-visible ${className}`}
+      className={`hud-scroll flex gap-1.5 overflow-x-auto pb-1 [mask-image:linear-gradient(to_right,#000_88%,transparent)] lg:grid lg:grid-cols-6 lg:overflow-visible lg:[mask-image:none] ${className}`}
     >
       {tabs.map((t, i) => {
         const active = t.id === tab;
@@ -35,14 +48,14 @@ export function TabBar({ tab, onSelect, className = "" }: TabBarProps) {
             type="button"
             aria-current={active ? "page" : undefined}
             onClick={() => onSelect(t.id)}
-            className={`group min-w-[7.5rem] flex-1 border-b-2 px-3 py-2 text-left transition-colors lg:min-w-0 ${
+            className={`group min-h-11 min-w-[6.75rem] flex-1 border-b-2 px-3 py-2 text-left transition-colors lg:min-w-0 ${
               active
-                ? "border-mint bg-mint text-bg"
+                ? "tab-sliver border-mint bg-mint text-bg"
                 : "border-line bg-surface hover:border-mint/60"
             }`}
           >
             <span
-              className={`caps block text-base font-bold leading-tight ${
+              className={`caps block truncate text-sm font-bold leading-tight xl:text-base ${
                 active ? "text-bg" : "text-ink group-hover:text-mint"
               }`}
             >
@@ -52,7 +65,7 @@ export function TabBar({ tab, onSelect, className = "" }: TabBarProps) {
               {t.label}
             </span>
             <span
-              className={`mt-0.5 hidden text-[10px] uppercase tracking-wider lg:block ${
+              className={`mt-0.5 hidden truncate text-[11px] uppercase tracking-wider xl:block ${
                 active ? "text-bg/70" : "text-muted"
               }`}
             >

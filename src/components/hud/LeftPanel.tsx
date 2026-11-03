@@ -21,8 +21,8 @@ export function LeftPanel({ className = "" }: { className?: string }) {
   const [copied, setCopied] = useState(false);
 
   return (
-    <aside className={`flex-col gap-5 ${className}`}>
-      <Frame className="aspect-square w-full shrink-0 bg-surface">
+    <aside className={`flex-col gap-4 xl:gap-5 ${className}`}>
+      <Frame className="aspect-square w-full max-w-[30vh] shrink-0 bg-surface">
         <div className="absolute inset-2 overflow-hidden">
           <Image
             src="/devyansh.jpg"
@@ -51,7 +51,7 @@ export function LeftPanel({ className = "" }: { className?: string }) {
       </div>
 
       <div>
-        <p className="tag">Gmail</p>
+        <p className="tag">Email</p>
         <p className="mt-1 select-all break-all font-mono text-[13px] text-ink">
           {profile.email}
         </p>
@@ -62,13 +62,15 @@ export function LeftPanel({ className = "" }: { className?: string }) {
               .writeText(profile.email)
               .then(() => {
                 setCopied(true);
-                setTimeout(() => setCopied(false), 1500);
+                setTimeout(() => setCopied(false), 1800);
               })
               .catch(() => {});
           }}
-          className="tag mt-1 hover:text-mint"
+          className={`mt-1 py-1 font-mono text-xs hover:text-mint ${
+            copied ? "animate-pulse text-mint" : "text-muted"
+          }`}
         >
-          {copied ? "copied ✓" : "copy address"}
+          {copied ? "> copied to clipboard" : "copy address"}
         </button>
       </div>
 

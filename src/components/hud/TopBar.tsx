@@ -29,9 +29,10 @@ export function TopBar({ className = "", onOpenPalette }: TopBarProps) {
           type="button"
           onClick={onOpenPalette}
           aria-label="Open command palette"
-          className="border border-line px-2 py-1 text-ink hover:border-mint hover:text-mint"
+          className="whitespace-nowrap border border-line px-2.5 py-1.5 text-ink hover:border-mint hover:text-mint"
         >
-          <span className="text-mint">/</span> command
+          <span className="text-mint">/</span>
+          <span className="hidden sm:inline"> command</span>
         </button>
         <span className="hidden sm:inline">{profile.location}</span>
         <span>

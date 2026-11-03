@@ -58,6 +58,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${inter.variable} ${jetbrains.variable} ${chakra.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-bg text-ink">
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              'try{var t=location.hash.slice(1);document.documentElement.setAttribute("data-tab",["start","logs","skills","creations","research","about"].indexOf(t)>-1?t:"start")}catch(e){}',
+          }}
+        />
         {children}
         <script
           type="application/ld+json"

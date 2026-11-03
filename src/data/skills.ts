@@ -34,7 +34,11 @@ export const skillGroups = [
   },
   {
     command: "web --apis",
-    items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "REST APIs"],
+    items: ["React", "Next.js", "Tailwind CSS", "REST APIs"],
+  },
+  {
+    command: "networking",
+    items: ["Routing (OSPF, EIGRP)", "VLANs", "ACLs", "NAT"],
   },
 ] as const;
 
@@ -72,4 +76,8 @@ export const skillUsage: Record<string, string[]> = {
   AWS: ["sadakvision"],
   React: ["cognalytix", "acadika"],
   "REST APIs": ["sadakvision", "cognalytix", "acadika"],
+  "Routing (OSPF, EIGRP)": ["digital-dorm-war"],
+  VLANs: ["digital-dorm-war"],
+  ACLs: ["digital-dorm-war"],
+  NAT: ["digital-dorm-war"],
 };

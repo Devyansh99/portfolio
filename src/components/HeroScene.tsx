@@ -8,7 +8,13 @@ import { mulberry32 } from "@/lib/rng";
 
 type Pointer = { x: number; y: number };
 
-function Network({ pointer }: { pointer: RefObject<Pointer> }) {
+function Network({
+  pointer,
+  count,
+}: {
+  pointer: RefObject<Pointer>;
+  count: number;
+}) {
   const group = useRef<THREE.Group>(null);
   const inner = useRef<THREE.Mesh>(null);
   const spin = useRef(0.6);
@@ -16,7 +22,6 @@ function Network({ pointer }: { pointer: RefObject<Pointer> }) {
 
   const positions = useMemo(() => {
     const rand = mulberry32(7);
-    const count = 900;
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
       const u = rand() * 2 - 1;
@@ -28,7 +33,7 @@ function Network({ pointer }: { pointer: RefObject<Pointer> }) {
       arr[i * 3 + 2] = r * s * Math.sin(theta);
     }
     return arr;
-  }, []);
+  }, [count]);
 
   useFrame((state, delta) => {
     const g = group.current;
@@ -91,14 +96,28 @@ function Network({ pointer }: { pointer: RefObject<Pointer> }) {
   );
 }
 
-export default function HeroScene({ pointer }: { pointer: RefObject<Pointer> }) {
+type HeroSceneProps = {
+  pointer: RefObject<Pointer>;
+  active: boolean;
+  low: boolean;
+  onReady: () => void;
+};
+
+export default function HeroScene({
+  pointer,
+  active,
+  low,
+  onReady,
+}: HeroSceneProps) {
   return (
     <Canvas
-      dpr={[1, 1.5]}
+      frameloop={active ? "always" : "never"}
+      dpr={low ? 1 : [1, 1.5]}
       camera={{ position: [0, 0, 6], fov: 50 }}
       gl={{ antialias: false, powerPreference: "low-power" }}
+      onCreated={onReady}
     >
-      <Network pointer={pointer} />
+      <Network pointer={pointer} count={low ? 500 : 900} />
     </Canvas>
   );
 }

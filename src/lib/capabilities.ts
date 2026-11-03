@@ -10,29 +10,8 @@ function makeMediaSubscribe(query: string) {
   };
 }
 
-const reducedMotionQuery = "(prefers-reduced-motion: reduce)";
-const pointerFineQuery = "(pointer: fine)";
 const narrowQuery = "(max-width: 767px)";
-
-const subscribeReducedMotion = makeMediaSubscribe(reducedMotionQuery);
-const subscribePointerFine = makeMediaSubscribe(pointerFineQuery);
 const subscribeNarrow = makeMediaSubscribe(narrowQuery);
-
-export function usePrefersReducedMotion(): boolean {
-  return useSyncExternalStore(
-    subscribeReducedMotion,
-    () => window.matchMedia(reducedMotionQuery).matches,
-    () => false,
-  );
-}
-
-export function usePointerFine(): boolean {
-  return useSyncExternalStore(
-    subscribePointerFine,
-    () => window.matchMedia(pointerFineQuery).matches,
-    () => false,
-  );
-}
 
 export function useDeviceTier(): "high" | "low" {
   return useSyncExternalStore(
@@ -65,10 +44,4 @@ const subscribeNever = () => () => {};
 
 export function useWebGL2(): boolean {
   return useSyncExternalStore(subscribeNever, detectWebGL2, () => false);
-}
-
-export function useCanRender3D(): boolean {
-  const reduce = usePrefersReducedMotion();
-  const webgl = useSyncExternalStore(subscribeNever, detectWebGL2, () => false);
-  return webgl && !reduce;
 }

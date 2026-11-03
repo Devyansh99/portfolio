@@ -24,7 +24,9 @@ export function CommandPalette({ onClose, onGo }: CommandPaletteProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    const previous = document.activeElement as HTMLElement | null;
     inputRef.current?.focus();
+    return () => previous?.focus?.();
   }, []);
 
   const commands = useMemo<Command[]>(
@@ -112,6 +114,13 @@ export function CommandPalette({ onClose, onGo }: CommandPaletteProps) {
     `${c.label} ${c.keywords}`.toLowerCase().includes(query.trim().toLowerCase()),
   );
   const selected = Math.min(index, Math.max(shown.length - 1, 0));
+  const activeId = shown[selected] ? `cmd-${shown[selected].id}` : undefined;
+
+  useEffect(() => {
+    if (activeId) {
+      document.getElementById(activeId)?.scrollIntoView({ block: "nearest" });
+    }
+  }, [activeId]);
 
   const execute = (c: Command | undefined) => {
     if (!c) return;
@@ -159,37 +168,50 @@ export function CommandPalette({ onClose, onGo }: CommandPaletteProps) {
             onKeyDown={onKey}
             placeholder="type a command, try: whoami"
             aria-label="Command"
-            className="w-full bg-transparent text-ink outline-none placeholder:text-muted"
+            role="combobox"
+            aria-expanded="true"
+            aria-controls="cmd-list"
+            aria-autocomplete="list"
+            aria-activedescendant={activeId}
+            className="w-full bg-transparent text-ink outline-none placeholder:text-muted focus-visible:outline-none"
           />
           <span className="tag shrink-0">esc</span>
         </div>
 
-        {message && (
-          <p className="border-b border-line px-4 py-2 text-xs text-amber">
-            {"> "}
-            {message}
-          </p>
-        )}
+        <p
+          aria-live="polite"
+          className={`border-b border-line px-4 py-2 text-xs text-amber ${
+            message ? "" : "hidden"
+          }`}
+        >
+          {message ? `> ${message}` : ""}
+        </p>
 
-        <ul className="hud-scroll max-h-72 overflow-y-auto py-1">
+        <ul
+          id="cmd-list"
+          role="listbox"
+          aria-label="Commands"
+          className="hud-scroll max-h-72 overflow-y-auto py-1"
+        >
           {shown.length === 0 && (
             <li className="px-4 py-3 text-muted">command not found: {query}</li>
           )}
           {shown.map((c, i) => (
-            <li key={c.id}>
-              <button
-                type="button"
-                onPointerEnter={() => setIndex(i)}
-                onClick={() => execute(c)}
-                className={`flex w-full items-center gap-3 px-4 py-2 text-left ${
-                  i === selected ? "bg-mint/10 text-mint" : "text-ink"
-                }`}
-              >
-                <span aria-hidden className="text-mint/60">
-                  {i === selected ? ">" : " "}
-                </span>
-                {c.label}
-              </button>
+            <li
+              key={c.id}
+              id={`cmd-${c.id}`}
+              role="option"
+              aria-selected={i === selected}
+              onPointerEnter={() => setIndex(i)}
+              onClick={() => execute(c)}
+              className={`flex cursor-pointer items-center gap-3 px-4 py-2 ${
+                i === selected ? "bg-mint/10 text-mint" : "text-ink"
+              }`}
+            >
+              <span aria-hidden className="text-mint/60">
+                {i === selected ? ">" : " "}
+              </span>
+              {c.label}
             </li>
           ))}
         </ul>

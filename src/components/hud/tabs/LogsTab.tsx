@@ -60,9 +60,12 @@ export function LogsTab() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 font-mono text-sm sm:px-8">
-      <p className="caps text-center text-sm font-semibold tracking-[0.2em] text-ink">
+      <h2
+        tabIndex={-1}
+        className="caps text-center text-sm font-semibold tracking-[0.2em] text-ink"
+      >
         Data log dump initialized.
-      </p>
+      </h2>
       <p className="mt-2 text-center text-xs text-muted">
         <span className="text-mint">$</span> git log --graph --all
       </p>
@@ -151,8 +154,12 @@ export function LogsTab() {
                     <p className="text-muted">
                       @@ {lines.length} {lines.length === 1 ? "change" : "changes"} @@
                     </p>
-                    {lines.map((p) => (
-                      <p key={p}>
+                    {lines.map((p, n) => (
+                      <p
+                        key={p}
+                        className="diff-line"
+                        style={{ animationDelay: `${n * 60}ms` }}
+                      >
                         <span className="mr-2 text-mint">+</span>
                         <span className="font-sans text-[13px] text-ink/85">{p}</span>
                       </p>
