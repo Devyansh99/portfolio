@@ -12,6 +12,22 @@
   --muted: #8a9b95;
 }
 
+html[data-theme="amber"] {
+  --mint: #ffb547;
+  --mint-dim: #9a6a1f;
+  --amber: #3dffb0;
+}
+
+html[data-theme="ice"] {
+  --mint: #5ce1ff;
+  --mint-dim: #2a7f94;
+}
+
+html[data-theme="rose"] {
+  --mint: #ff6fb5;
+  --mint-dim: #9a3a6e;
+}
+
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);

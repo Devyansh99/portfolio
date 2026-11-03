@@ -15,9 +15,22 @@ const statusTone: Record<Project["status"], string> = {
   academic: "text-ink/70",
 };
 
-export function CreationsTab({ active }: { active: boolean }) {
-  const [i, setI] = useState(0);
-  const [open, setOpen] = useState<Project | null>(null);
+export function CreationsTab({
+  active,
+  initialId,
+}: {
+  active: boolean;
+  initialId?: string;
+}) {
+  const start = Math.max(
+    0,
+    projects.findIndex((p) => p.id === initialId),
+  );
+  const [i, setI] = useState(start);
+  const [open, setOpen] = useState<Project | null>(
+    initialId ? (projects[start] ?? null) : null,
+  );
+  const [copied, setCopied] = useState(false);
   const touchX = useRef<number | null>(null);
   const opener = useRef<HTMLButtonElement | null>(null);
 
@@ -209,6 +222,22 @@ export function CreationsTab({ active }: { active: boolean }) {
                 </h3>
                 <p className="mt-1 font-mono text-xs text-amber">{open.kicker}</p>
               </div>
+              <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard
+                    .writeText(`${window.location.origin}/#creations/${open.id}`)
+                    .then(() => {
+                      setCopied(true);
+                      setTimeout(() => setCopied(false), 1800);
+                    })
+                    .catch(() => {});
+                }}
+                className="caps border border-line px-3 py-2 text-sm text-ink hover:border-mint hover:text-mint"
+              >
+                {copied ? "copied" : "copy link"}
+              </button>
               <button
                 type="button"
                 autoFocus
@@ -217,6 +246,7 @@ export function CreationsTab({ active }: { active: boolean }) {
               >
                 close · esc
               </button>
+              </div>
             </div>
 
             <p className="mt-4 text-lg leading-snug text-ink">{open.what}</p>

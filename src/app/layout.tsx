@@ -50,7 +50,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script
           dangerouslySetInnerHTML={{
             __html:
-              'try{var t=location.hash.slice(1);document.documentElement.setAttribute("data-tab",["start","logs","skills","creations","research","about"].indexOf(t)>-1?t:"start")}catch(e){}',
+              'try{var t=location.hash.slice(1).split("/")[0];var d=document.documentElement;d.setAttribute("data-tab",["start","logs","skills","creations","research","about"].indexOf(t)>-1?t:"start");var th=localStorage.getItem("theme");if(th)d.setAttribute("data-theme",th)}catch(e){}',
           }}
         />
         {children}

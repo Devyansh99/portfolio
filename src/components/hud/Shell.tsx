@@ -3,25 +3,19 @@
 import { useEffect, useRef, useState } from "react";
 import type { KeyboardEvent, RefObject } from "react";
 import { profile } from "@/data/profile";
+import { pushHistory, useShellHistory } from "@/lib/history";
 import {
+  commandGroups,
   complete,
+  pathLabel,
   run,
+  suggestions,
   type ShellAction,
   type ShellLine,
 } from "@/lib/shell";
 import type { TabId } from "./TabBar";
 
 type Entry = { id: number; cmd: string; lines: ShellLine[] };
-
-const chips = [
-  "help",
-  "ls projects",
-  "cat sadakvision",
-  "git log",
-  "neofetch",
-  "contact",
-  "sudo connect devyansh",
-];
 
 const tone = {
   mint: "text-mint",
@@ -31,20 +25,33 @@ const tone = {
 
 type ShellProps = {
   tab: TabId;
+  sub?: string;
   inputRef: RefObject<HTMLInputElement | null>;
-  onGo: (id: TabId) => void;
+  onGo: (id: TabId, sub?: string) => void;
   onPalette: () => void;
+  onMatrix: () => void;
   className?: string;
 };
 
-export function Shell({ tab, inputRef, onGo, onPalette, className = "" }: ShellProps) {
+export function Shell({
+  tab,
+  sub,
+  inputRef,
+  onGo,
+  onPalette,
+  onMatrix,
+  className = "",
+}: ShellProps) {
   const [value, setValue] = useState("");
   const [entries, setEntries] = useState<Entry[]>([]);
   const [open, setOpen] = useState(false);
-  const [past, setPast] = useState<string[]>([]);
+  const [ref, setRef] = useState(false);
+  const past = useShellHistory();
   const cursor = useRef(-1);
   const nextId = useRef(1);
   const log = useRef<HTMLDivElement>(null);
+
+  const cwd = tab === "start" ? [] : sub ? [tab, sub] : [tab];
 
   useEffect(() => {
     const el = log.current;
@@ -53,7 +60,7 @@ export function Shell({ tab, inputRef, onGo, onPalette, className = "" }: ShellP
 
   const act = (a: ShellAction | undefined) => {
     if (!a) return;
-    if (a.type === "go") onGo(a.tab);
+    if (a.type === "go") onGo(a.tab, a.sub);
     if (a.type === "open") window.open(a.url, "_blank", "noopener,noreferrer");
     if (a.type === "mail") {
       const q = a.subject ? `?subject=${encodeURIComponent(a.subject)}` : "";
@@ -62,13 +69,22 @@ export function Shell({ tab, inputRef, onGo, onPalette, className = "" }: ShellP
     if (a.type === "clear") setEntries([]);
     if (a.type === "palette") onPalette();
     if (a.type === "close") setOpen(false);
+    if (a.type === "matrix") onMatrix();
+    if (a.type === "theme") {
+      document.documentElement.setAttribute("data-theme", a.name);
+      try {
+        window.localStorage.setItem("theme", a.name);
+      } catch {
+        // storage unavailable: theme lasts for this visit
+      }
+    }
   };
 
   const exec = (raw: string) => {
     const cmd = raw.trim();
     if (!cmd) return;
-    const res = run(cmd, past);
-    setPast((p) => [...p, cmd]);
+    const res = run(cmd, { history: past, cwd });
+    pushHistory(cmd);
     cursor.current = -1;
     if (res.action?.type !== "clear" && res.action?.type !== "close") {
       setEntries((e) => [
@@ -76,15 +92,21 @@ export function Shell({ tab, inputRef, onGo, onPalette, className = "" }: ShellP
         { id: nextId.current++, cmd, lines: res.lines },
       ]);
       setOpen(true);
+      setRef(false);
     }
     act(res.action);
     setValue("");
   };
 
+  const insert = (text: string) => {
+    setValue(text);
+    inputRef.current?.focus();
+  };
+
   const onKey = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Tab" && value.trim()) {
       e.preventDefault();
-      setValue(complete(value));
+      setValue(complete(value, cwd));
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       if (past.length === 0) return;
@@ -102,15 +124,73 @@ export function Shell({ tab, inputRef, onGo, onPalette, className = "" }: ShellP
         setValue(past[cursor.current]);
       }
     } else if (e.key === "Escape") {
-      if (open) setOpen(false);
+      if (ref) setRef(false);
+      else if (open) setOpen(false);
       else e.currentTarget.blur();
     }
   };
 
-  const showDrawer = open && entries.length > 0;
+  const showDrawer = open && entries.length > 0 && !ref;
+  const lastId = entries[entries.length - 1]?.id;
+  const chips = suggestions(cwd);
 
   return (
     <div className={`relative ${className}`}>
+      {ref && (
+        <div
+          role="region"
+          aria-label="Command reference"
+          className="absolute inset-x-0 bottom-full z-40 mb-2 border border-mint/40 bg-bg/95"
+        >
+          <div className="flex items-center justify-between border-b border-line px-3 py-1 font-mono text-xs text-muted">
+            <span>commands: tap one to type it, [run] to run it</span>
+            <button
+              type="button"
+              onClick={() => setRef(false)}
+              aria-label="Close command reference"
+              className="px-1 py-1 hover:text-mint"
+            >
+              [x]
+            </button>
+          </div>
+          <div className="hud-scroll max-h-[52svh] overflow-y-auto px-3 py-2 font-mono text-[13px]">
+            {commandGroups.map((g) => (
+              <div key={g.title} className="mb-3">
+                <p className="text-amber"># {g.title}</p>
+                <ul>
+                  {g.items.map((c) => (
+                    <li
+                      key={c.cmd}
+                      className="flex items-start gap-2 border-b border-line/40 py-1"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => {
+                          insert(c.run);
+                          setRef(false);
+                        }}
+                        className="grid min-w-0 flex-1 gap-x-3 text-left sm:grid-cols-[15rem_1fr]"
+                      >
+                        <span className="text-mint">{c.cmd}</span>
+                        <span className="text-ink/80">{c.desc}</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => exec(c.run)}
+                        aria-label={`Run ${c.run}`}
+                        className="shrink-0 px-1 py-1 text-xs text-muted hover:text-mint"
+                      >
+                        [run]
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {showDrawer && (
         <div className="absolute inset-x-0 bottom-full z-30 mb-2 border border-mint/40 bg-bg/95">
           <div className="flex items-center justify-between border-b border-line px-3 py-1 font-mono text-xs text-muted">
@@ -145,9 +225,15 @@ export function Shell({ tab, inputRef, onGo, onPalette, className = "" }: ShellP
                   <span className="text-mint">$</span> {en.cmd}
                 </p>
                 {en.lines.map((l, i) => {
-                  const cls = `whitespace-pre-wrap break-words ${l.tone ? tone[l.tone] : "text-ink/85"}`;
+                  const cls = `whitespace-pre-wrap break-words ${l.tone ? tone[l.tone] : "text-ink/85"} ${
+                    en.id === lastId ? "diff-line" : ""
+                  }`;
+                  const style =
+                    en.id === lastId
+                      ? { animationDelay: `${Math.min(i * 25, 500)}ms` }
+                      : undefined;
                   return l.href ? (
-                    <p key={i} className={cls}>
+                    <p key={i} className={cls} style={style}>
                       <a
                         href={l.href}
                         target={l.href.startsWith("mailto:") ? undefined : "_blank"}
@@ -158,7 +244,7 @@ export function Shell({ tab, inputRef, onGo, onPalette, className = "" }: ShellP
                       </a>
                     </p>
                   ) : (
-                    <p key={i} className={cls}>
+                    <p key={i} className={cls} style={style}>
                       {l.text || " "}
                     </p>
                   );
@@ -170,10 +256,22 @@ export function Shell({ tab, inputRef, onGo, onPalette, className = "" }: ShellP
       )}
 
       <div
-        className={`hud-scroll mb-1.5 flex gap-1.5 overflow-x-auto ${
+        className={`hud-scroll mb-1.5 flex items-center gap-1.5 overflow-x-auto ${
           entries.length > 0 ? "lg:hidden" : ""
         }`}
       >
+        <button
+          type="button"
+          aria-expanded={ref}
+          onClick={() => setRef((v) => !v)}
+          className={`shrink-0 border px-2.5 py-1.5 font-mono text-xs ${
+            ref
+              ? "border-mint bg-mint text-bg"
+              : "border-mint/60 text-mint hover:bg-mint hover:text-bg"
+          }`}
+        >
+          [commands]
+        </button>
         {chips.map((c) => (
           <button
             key={c}
@@ -198,7 +296,7 @@ export function Shell({ tab, inputRef, onGo, onPalette, className = "" }: ShellP
           className="hidden shrink-0 whitespace-nowrap font-mono text-sm sm:block"
         >
           <span className="text-mint">visitor@portfolio</span>
-          <span className="text-muted">:~/{tab}$</span>
+          <span className="text-muted">:{pathLabel(cwd)}$</span>
         </label>
         <span aria-hidden className="font-mono text-sm text-mint sm:hidden">
           $
@@ -215,7 +313,7 @@ export function Shell({ tab, inputRef, onGo, onPalette, className = "" }: ShellP
           autoCorrect="off"
           spellCheck={false}
           enterKeyHint="send"
-          placeholder="type help, or try: cat sadakvision"
+          placeholder="type help, or press [commands]"
           className="min-h-11 min-w-0 flex-1 bg-transparent font-mono text-base text-ink outline-none placeholder:text-muted/70 focus-visible:outline-none sm:text-sm"
         />
         <button

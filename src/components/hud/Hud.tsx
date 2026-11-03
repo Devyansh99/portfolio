@@ -5,9 +5,11 @@ import type { ReactNode } from "react";
 import { CommandPalette } from "./CommandPalette";
 import { Frame } from "./Frame";
 import { LeftPanel } from "./LeftPanel";
+import { MatrixRain } from "./MatrixRain";
 import { Shell } from "./Shell";
 import { TabBar, tabs, type TabId } from "./TabBar";
 import { TopBar } from "./TopBar";
+import { validSub } from "@/lib/shell";
 import { AboutTab } from "./tabs/AboutTab";
 import { CreationsTab } from "./tabs/CreationsTab";
 import { LogsTab } from "./tabs/LogsTab";
@@ -20,11 +22,26 @@ function subscribeHash(onChange: () => void) {
   return () => window.removeEventListener("hashchange", onChange);
 }
 
-const views: Record<TabId, (active: boolean) => ReactNode> = {
+const konami = [
+  "arrowup",
+  "arrowup",
+  "arrowdown",
+  "arrowdown",
+  "arrowleft",
+  "arrowright",
+  "arrowleft",
+  "arrowright",
+  "b",
+  "a",
+];
+
+const views: Record<TabId, (active: boolean, sub?: string) => ReactNode> = {
   start: (active) => <StartTab active={active} />,
   logs: () => <LogsTab />,
   skills: () => <SkillsTab />,
-  creations: (active) => <CreationsTab active={active} />,
+  creations: (active, sub) => (
+    <CreationsTab key={sub ?? "none"} active={active} initialId={sub} />
+  ),
   research: () => <ResearchTab />,
   about: () => <AboutTab />,
 };
@@ -35,9 +52,13 @@ export function Hud() {
     () => window.location.hash.slice(1),
     () => "",
   );
-  const current = tabs.find((t) => t.id === hash) ?? tabs[0];
+  const [hashTab, hashSub] = hash.split("/");
+  const current = tabs.find((t) => t.id === hashTab) ?? tabs[0];
   const tab = current.id;
+  const sub = tab === "creations" ? validSub(hashSub) : undefined;
   const [paletteOpen, setPaletteOpen] = useState(false);
+  const [rain, setRain] = useState(false);
+  const keys = useRef<string[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const shellRef = useRef<HTMLInputElement>(null);
@@ -79,6 +100,12 @@ export function Hud() {
       const el = e.target as Element;
       if (el.closest?.("input,textarea,[contenteditable]")) return;
       const k = e.key.toLowerCase();
+      keys.current = [...keys.current, k].slice(-konami.length);
+      if (keys.current.join() === konami.join()) {
+        keys.current = [];
+        setRain(true);
+        return;
+      }
       if ((e.metaKey || e.ctrlKey) && k === "k") {
         e.preventDefault();
         setPaletteOpen(true);
@@ -100,8 +127,8 @@ export function Hud() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const select = (id: TabId) => {
-    window.location.hash = id;
+  const select = (id: TabId, subId?: string) => {
+    window.location.hash = subId ? `${id}/${subId}` : id;
   };
 
   return (
@@ -137,7 +164,7 @@ export function Hud() {
                     aria-label={t.label}
                     className={`hud-panel h-full min-h-full ${active ? "tab-in" : ""}`}
                   >
-                    {views[t.id](active)}
+                    {views[t.id](active, sub)}
                   </section>
                 );
               })}
@@ -147,14 +174,18 @@ export function Hud() {
 
         <Shell
           tab={tab}
+          sub={sub}
           inputRef={shellRef}
           onGo={select}
           onPalette={() => setPaletteOpen(true)}
+          onMatrix={() => setRain(true)}
           className="lg:col-start-2"
         />
 
         <TabBar tab={tab} onSelect={select} className="lg:col-start-2" />
       </div>
+
+      {rain && <MatrixRain onDone={() => setRain(false)} />}
 
       {paletteOpen && (
         <CommandPalette onClose={() => setPaletteOpen(false)} onGo={select} />
