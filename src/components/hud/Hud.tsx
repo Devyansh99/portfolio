@@ -134,9 +134,9 @@ export function Hud() {
   };
 
   return (
-    <div className="scanlines relative h-svh overflow-hidden bg-bg">
+    <div className="scanlines relative h-dvh overflow-clip bg-bg">
       <div className="hud-glow pointer-events-none absolute inset-0" aria-hidden />
-      <div className="relative mx-auto grid h-full max-w-[1920px] grid-rows-[auto_minmax(0,1fr)_auto_auto] gap-2 p-2 sm:p-3 lg:grid-cols-[11rem_minmax(0,1fr)] lg:gap-x-4 lg:gap-y-3 lg:p-4 xl:grid-cols-[13rem_minmax(0,1fr)]">
+      <div className="relative mx-auto grid h-full max-w-[1920px] grid-cols-[minmax(0,1fr)] grid-rows-[auto_minmax(0,1fr)_auto_auto] gap-2 p-2 sm:p-3 lg:grid-cols-[11rem_minmax(0,1fr)] lg:gap-x-4 lg:gap-y-3 lg:p-4 xl:grid-cols-[13rem_minmax(0,1fr)]">
         <TopBar
           tab={tab}
           className="lg:col-span-2"
@@ -144,7 +144,7 @@ export function Hud() {
         />
         <LeftPanel className="hud-scroll hidden min-h-0 overflow-y-auto pr-1 pt-3 lg:flex" />
 
-        <main className="min-h-0">
+        <main className="min-h-0 min-w-0">
           <Frame title={`~/${tab}`} className="h-full bg-bg/60">
             <div
               ref={barRef}
@@ -181,10 +181,10 @@ export function Hud() {
           onGo={select}
           onPalette={() => setPaletteOpen(true)}
           onMatrix={() => setRain(true)}
-          className="lg:col-start-2"
+          className="min-w-0 lg:col-start-2"
         />
 
-        <TabBar tab={tab} onSelect={select} className="lg:col-start-2" />
+        <TabBar tab={tab} onSelect={select} className="min-w-0 lg:col-start-2" />
       </div>
 
       {rain && <MatrixRain onDone={() => setRain(false)} />}

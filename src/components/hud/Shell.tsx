@@ -153,7 +153,7 @@ export function Shell({
               [x]
             </button>
           </div>
-          <div className="hud-scroll max-h-[52svh] overflow-y-auto px-3 py-2 font-mono text-[13px]">
+          <div className="hud-scroll max-h-[min(52svh,20rem)] overflow-y-auto px-3 py-2 font-mono text-[13px]">
             {commandGroups.map((g) => (
               <div key={g.title} className="mb-3">
                 <p className="text-amber"># {g.title}</p>
@@ -217,7 +217,7 @@ export function Shell({
             ref={log}
             role="log"
             aria-live="polite"
-            className="hud-scroll max-h-[38svh] overflow-y-auto px-3 py-2 font-mono text-[13px] leading-relaxed"
+            className="hud-scroll max-h-[min(38svh,16rem)] overflow-y-auto px-3 py-2 font-mono text-[13px] leading-relaxed"
           >
             {entries.map((en) => (
               <div key={en.id} className="mb-3">
@@ -264,7 +264,7 @@ export function Shell({
           type="button"
           aria-expanded={ref}
           onClick={() => setRef((v) => !v)}
-          className={`shrink-0 border px-2.5 py-1.5 font-mono text-xs ${
+          className={`min-h-9 shrink-0 border px-2.5 py-1.5 font-mono text-xs ${
             ref
               ? "border-mint bg-mint text-bg"
               : "border-mint/60 text-mint hover:bg-mint hover:text-bg"
@@ -277,7 +277,7 @@ export function Shell({
             key={c}
             type="button"
             onClick={() => exec(c)}
-            className="shrink-0 border border-line bg-surface px-2.5 py-1.5 font-mono text-xs text-muted hover:border-mint/60 hover:text-mint"
+            className="min-h-9 shrink-0 border border-line bg-surface px-2.5 py-1.5 font-mono text-xs text-muted hover:border-mint/60 hover:text-mint"
           >
             {c}
           </button>

@@ -54,11 +54,13 @@ export function StartTab({ active }: { active: boolean }) {
   const tier = useDeviceTier();
   const [ready, setReady] = useState(false);
   const pointer = useRef({ x: 0, y: 0 });
+  const stage = useRef<HTMLDivElement>(null);
 
   const onMove = (e: PointerEvent<HTMLDivElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    pointer.current.x = ((e.clientX - r.left) / r.width) * 2 - 1;
-    pointer.current.y = -(((e.clientY - r.top) / r.height) * 2 - 1);
+    const r = stage.current?.getBoundingClientRect();
+    if (!r || r.width === 0 || r.height === 0) return;
+    pointer.current.x = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width) * 2 - 1));
+    pointer.current.y = Math.max(-1, Math.min(1, -(((e.clientY - r.top) / r.height) * 2 - 1)));
   };
 
   const onLeave = () => {
@@ -70,34 +72,20 @@ export function StartTab({ active }: { active: boolean }) {
     <div
       onPointerMove={onMove}
       onPointerLeave={onLeave}
-      className="relative h-full min-h-[26rem] overflow-hidden"
+      onPointerUp={onLeave}
+      onPointerCancel={onLeave}
+      className="relative min-h-full touch-pan-y overflow-x-clip lg:h-full lg:min-h-[26rem] lg:overflow-hidden"
     >
       <div className="bg-grid absolute inset-0" aria-hidden />
-      <Rings />
-      {gl && (
-        <div
-          aria-hidden
-          className={`absolute inset-0 transition-opacity duration-700 ${
-            ready ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <HeroScene
-            pointer={pointer}
-            active={active}
-            low={tier === "low"}
-            onReady={() => setReady(true)}
-          />
-        </div>
-      )}
 
-      <div className="relative flex h-full flex-col items-center justify-between px-5 py-8 text-center">
-        <div className="@container w-full">
+      <div className="relative flex min-h-full flex-col items-center gap-4 px-4 py-5 text-center sm:px-5 lg:h-full lg:justify-between lg:gap-0 lg:py-8">
+        <div className="@container relative z-10 w-full">
           <pre aria-hidden className="ascii mx-auto hidden w-fit text-left @xl:block">
             {banners.start}
           </pre>
           <h1
             tabIndex={-1}
-            className="mt-2 text-3xl font-bold tracking-tight text-ink sm:text-4xl @xl:text-2xl"
+            className="mt-2 break-words text-3xl font-bold tracking-tight text-ink sm:text-4xl @xl:text-2xl"
           >
             {profile.name}
           </h1>
@@ -105,27 +93,52 @@ export function StartTab({ active }: { active: boolean }) {
           <Tagline />
         </div>
 
-        <div className="flex w-full flex-col items-center gap-4 lg:hidden">
-          <Frame className="size-24 shrink-0 bg-surface">
-            <ScanPortrait inset="inset-1.5" sizes="96px" />
-</Frame>
-          <dl className="grid max-w-sm grid-cols-2 gap-x-6 gap-y-3 text-left">
+        <div
+          ref={stage}
+          className="relative h-[min(38svh,22rem)] min-h-56 w-full max-w-md shrink-0 lg:absolute lg:inset-0 lg:z-0 lg:h-auto lg:min-h-0 lg:max-w-none"
+        >
+          <Rings />
+          {gl && (
+            <div
+              aria-hidden
+              className={`absolute inset-0 transition-opacity duration-700 ${
+                ready ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <HeroScene
+                pointer={pointer}
+                active={active}
+                low={tier === "low"}
+                onReady={() => setReady(true)}
+              />
+            </div>
+          )}
+          <p className="tag pointer-events-none absolute inset-x-0 bottom-0 lg:hidden">
+            drag the sphere
+          </p>
+        </div>
+
+        <div className="relative z-10 flex w-full max-w-md items-center gap-4 text-left lg:hidden">
+          <Frame className="aspect-[4/5] w-36 shrink-0 bg-surface sm:w-44">
+            <ScanPortrait inset="inset-1.5" sizes="176px" />
+          </Frame>
+          <dl className="grid min-w-0 flex-1 gap-y-3">
             <div>
               <dt className="tag">Occupation</dt>
-              <dd className="font-semibold text-mint">{profile.occupation}</dd>
+              <dd className="break-words font-semibold text-mint">{profile.occupation}</dd>
             </div>
             <div>
               <dt className="tag">Corporation</dt>
-              <dd className="font-semibold text-mint">{profile.corporation}</dd>
+              <dd className="break-words font-semibold text-mint">{profile.corporation}</dd>
             </div>
-            <div className="col-span-2">
+            <div>
               <dt className="tag">Status</dt>
-              <dd className="font-semibold text-mint">{profile.status}</dd>
+              <dd className="break-words font-semibold text-mint">{profile.status}</dd>
             </div>
           </dl>
         </div>
 
-        <p className="cursor tag hidden lg:block">
+        <p className="cursor tag relative z-10 hidden lg:block">
           boot ok · press 1-6 to jump · / opens the shell · move your cursor over the sphere
         </p>
       </div>

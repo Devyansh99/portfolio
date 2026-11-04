@@ -11,7 +11,7 @@ const links = [
 ] as const;
 
 const field =
-  "w-full border border-line bg-surface-2 px-3 py-2 font-sans text-[15px] text-ink placeholder:text-muted focus-visible:border-mint";
+  "w-full border border-line bg-surface-2 px-3 py-2 font-sans text-base text-ink placeholder:text-muted focus-visible:border-mint";
 
 export function ContactComposer() {
   const [name, setName] = useState("");

@@ -38,7 +38,7 @@ export function SkillsTab() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 font-mono text-sm sm:px-8">
       <TabHeader id="skills" cmd="cat skills.md" title="Skill matrix loaded." />
-      <p className="mb-5 mt-4 h-[4.5rem] overflow-hidden text-mint" aria-live="polite">
+      <p className="mb-5 mt-4 min-h-[4.5rem] text-mint" aria-live="polite">
         {"> "}
         {readout}
       </p>
@@ -58,7 +58,7 @@ export function SkillsTab() {
       </dl>
 
       <div
-        className="hud-scroll overflow-x-auto overflow-y-hidden py-1"
+        className="touch-pan-x touch-pan-y overflow-x-auto overflow-y-hidden overscroll-x-contain py-1 [scrollbar-color:var(--mint-dim)_transparent] [scrollbar-width:thin]"
         onPointerLeave={() => {
           setSkill(null);
           setProject(null);
@@ -80,7 +80,7 @@ export function SkillsTab() {
                   setSkill(null);
                 }}
                 aria-label={p.title}
-                className={`w-9 shrink-0 text-center text-xs transition-colors sm:w-11 ${
+                className={`w-11 shrink-0 text-center text-xs transition-colors sm:w-11 ${
                   project === p.id ? "text-mint" : "text-muted"
                 }`}
               >

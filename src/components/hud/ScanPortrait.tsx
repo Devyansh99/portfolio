@@ -144,7 +144,7 @@ export function ScanPortrait({
     };
 
     const verified = () => {
-      const bw = Math.min(w - 24, 150);
+      const bw = Math.min(w - 12, 150);
       const bx = (w - bw) / 2;
       const by = h / 2 - 16;
       ctx.fillStyle = "rgba(5,7,10,0.88)";
@@ -153,7 +153,7 @@ export function ScanPortrait({
       ctx.lineWidth = 1.5;
       ctx.strokeRect(bx, by, bw, 32);
       ctx.fillStyle = "#ffb547";
-      ctx.font = `700 11px ${MONO}`;
+      ctx.font = `700 ${Math.max(8, Math.min(11, Math.floor(w / 13)))}px ${MONO}`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText("ACCESS VERIFIED", w / 2, h / 2);
@@ -241,7 +241,7 @@ export function ScanPortrait({
       <span
         ref={labelRef}
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 bg-bg/70 px-1.5 py-0.5 font-mono text-[10px] text-mint"
+        className="pointer-events-none absolute inset-x-0 bottom-0 truncate bg-bg/70 px-1.5 py-0.5 font-mono text-[10px] text-mint"
       />
     </div>
   );

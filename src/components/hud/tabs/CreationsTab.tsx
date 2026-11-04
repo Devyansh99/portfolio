@@ -109,7 +109,7 @@ export function CreationsTab({
           ‹
         </button>
 
-        <div className="relative h-[30rem] w-full max-w-5xl">
+        <div className="relative h-[min(30rem,72dvh)] w-full max-w-5xl">
           {projects.map((p, idx) => {
             const off = idx - i;
             if (Math.abs(off) > 1) return null;
@@ -132,7 +132,7 @@ export function CreationsTab({
                   transform: `translate(-50%, -50%) translateX(${off * 108}%) rotateY(${-off * 36}deg) scale(${isActive ? 1 : 0.82})`,
                   opacity: isActive ? 1 : 0.55,
                 }}
-                className={`absolute left-1/2 top-1/2 h-[29rem] w-[18.5rem] transition-all duration-500 sm:w-[24rem] ${
+                className={`absolute left-1/2 top-1/2 h-[min(29rem,70dvh)] w-[18.5rem] transition-all duration-500 sm:w-[24rem] ${
                   isActive ? "z-10" : "hidden cursor-pointer sm:block"
                 }`}
               >
@@ -217,20 +217,20 @@ export function CreationsTab({
           onKeyDown={trapTab}
         >
           <div className="mx-auto max-w-4xl px-5 pb-10 sm:px-10">
-            <div className="sticky top-0 z-10 -mx-5 flex items-start justify-between gap-4 bg-bg px-5 py-4 sm:-mx-10 sm:px-10 sm:pt-8">
-              <div>
+            <div className="sticky top-0 z-10 -mx-5 flex flex-col gap-3 bg-bg px-5 py-3 sm:-mx-10 sm:flex-row sm:items-start sm:justify-between sm:gap-4 sm:px-10 sm:pt-8">
+              <div className="min-w-0">
                 <p className="tag">
                   {open.period} · {open.status}
                 </p>
                 <h3
                   id="creation-title"
-                  className="caps mt-2 text-4xl font-bold text-mint"
+                  className="caps mt-2 break-words text-2xl font-bold text-mint sm:text-4xl"
                 >
                   {open.title}
                 </h3>
                 <p className="mt-1 font-mono text-xs text-amber">{open.kicker}</p>
               </div>
-              <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+              <div className="flex shrink-0 flex-row gap-2">
               <button
                 type="button"
                 onClick={() => {
@@ -242,7 +242,7 @@ export function CreationsTab({
                     })
                     .catch(() => {});
                 }}
-                className="caps border border-line px-3 py-2 text-sm text-ink hover:border-mint hover:text-mint"
+                className="caps min-h-11 border border-line px-3 py-2 text-sm text-ink hover:border-mint hover:text-mint"
               >
                 {copied ? "copied" : "copy link"}
               </button>
@@ -250,7 +250,7 @@ export function CreationsTab({
                 type="button"
                 autoFocus
                 onClick={close}
-                className="caps shrink-0 border border-line px-3 py-2 text-sm text-ink hover:border-mint hover:text-mint"
+                className="caps min-h-11 shrink-0 border border-line px-3 py-2 text-sm text-ink hover:border-mint hover:text-mint"
               >
                 close · esc
               </button>

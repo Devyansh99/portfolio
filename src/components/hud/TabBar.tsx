@@ -29,9 +29,9 @@ export function TabBar({ tab, onSelect, className = "" }: TabBarProps) {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    ref.current
-      ?.querySelector('[aria-current="page"]')
-      ?.scrollIntoView({ inline: "nearest", block: "nearest" });
+    const nav = ref.current;
+    const btn = nav?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (nav && btn) nav.scrollTo({ left: Math.max(0, btn.offsetLeft - 8) });
   }, [tab]);
 
   return (
