@@ -112,7 +112,7 @@ export const projects: Project[] = [
     links: [
       {
         label: "github",
-        url: "https://github.com/akshat3144/handwriting_autocomplete_system",
+        url: "https://github.com/Devyansh99/handwriting_autocomplete_system",
       },
     ],
   },
@@ -140,7 +140,7 @@ export const projects: Project[] = [
     links: [
       {
         label: "repo",
-        url: "https://github.com/asp616848/AdaptiveBandit--Contextual-Bandits-for-Real-Time-Decision-Support-in-Customer-Service",
+        url: "https://github.com/Devyansh99/AdaptiveBandit--Contextual-Bandits-for-Real-Time-Decision-Support-in-Customer-Service",
       },
     ],
   },
