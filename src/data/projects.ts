@@ -44,10 +44,6 @@ export const projects: Project[] = [
         label: "github",
         url: "https://github.com/Dynamic-Road-Monitoring-and-Safety-Proj",
       },
-      {
-        label: "dashboard repo",
-        url: "https://github.com/Devyansh99/road-quality-monitoring-dashboard",
-      },
     ],
   },
   {
