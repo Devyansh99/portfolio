@@ -80,7 +80,7 @@ export function CommandPalette({ onClose, onGo }: CommandPaletteProps) {
         id: "whoami",
         label: "whoami",
         keywords: "me who",
-        run: () => "devyansh_agarwal, uid=2027, groups=plaksha,sadakvision",
+        run: () => "devyansh_agarwal, uid=2027, groups=plaksha,sadakvision,indiamart",
       },
       {
         id: "commit",

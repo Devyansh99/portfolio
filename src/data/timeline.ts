@@ -12,11 +12,30 @@ export type TimelineEntry = {
 export const timeline: TimelineEntry[] = [
   {
     kind: "work",
-    title: "AI Engineer",
-    org: "SadakVision",
-    period: "Jan 2025 – Present",
+    title: "International Intern",
+    org: "IndiaMART InterMESH",
+    period: "Joining Dec 2026",
+    summary: "A semester-long international internship. Details to come once the work is underway.",
+  },
+  {
+    kind: "role",
+    title: "Teaching Assistant, Machine Learning for Business",
+    org: "Plaksha University",
+    period: "Nov 2026 – Dec 2026",
+    summary: "TA for the Machine Learning for Business course in the MS in AI programme, with a class of 30 students.",
+    points: [
+      "Helped the professor design the course assignments.",
+      "Handled announcements and coordination between the class and the professor.",
+      "Helped grade the final project presentations.",
+    ],
+  },
+  {
+    kind: "work",
+    title: "Founding Member, AI Engineer",
+    org: "Sochera AI · SadakVision",
+    period: "Jan 2025 – Dec 2026",
     summary:
-      "SadakVision turns an ordinary smartphone on a car dashboard into a road inspector. It records drives, finds potholes, cracks, manholes and garbage, and rates how bad each spot is, so city authorities know what to fix first. I am part of the team building the AI side.",
+      "We founded Sochera AI and built SadakVision, a product that turns an ordinary smartphone on a car dashboard into a road inspector. It records drives, finds potholes, cracks, manholes and garbage, and rates how bad each spot is, so city authorities know what to fix first. I was the AI engineer on the founding team, running it alongside college.",
     parts: [
       {
         label: "Knowing when to record",

@@ -700,7 +700,7 @@ export function run(raw: string, ctx: ShellContext): ShellResult {
     }
 
     case "whoami":
-      return { lines: [text("devyansh_agarwal, uid=2027, groups=plaksha,sadakvision")] };
+      return { lines: [text("devyansh_agarwal, uid=2027, groups=plaksha,sadakvision,indiamart")] };
 
     case "neofetch":
       return {

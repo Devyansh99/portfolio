@@ -1,7 +1,7 @@
 export const profile = {
   name: "Devyansh Agarwal",
   occupation: "AI Engineer",
-  corporation: "SadakVision",
+  corporation: "Sochera AI",
   status: "Building Cognalytix",
   school: "Plaksha University",
   location: "Mohali, India",
@@ -13,11 +13,11 @@ export const profile = {
     },
     {
       label: "SadakVision",
-      text: "Since January 2025 I've been part of SadakVision, a product that turns an ordinary smartphone on a car's windshield into a road inspector. It notices rough patches, saves a short clip of the road, and shows cities on a map where the damage is and how bad it is. We presented the work at INDIS 2026 at IIT Guwahati, and the paper is now under review.",
+      text: "From January 2025 I was a founding member of Sochera AI, where we built SadakVision, a product that turns an ordinary smartphone on a car's windshield into a road inspector. It notices rough patches, saves a short clip of the road, and shows cities on a map where the damage is and how bad it is. We presented the work at INDIS 2026 at IIT Guwahati, and the paper is now under review.",
     },
     {
       label: "Now",
-      text: "I'll be joining IndiaMART InterMESH for my semester-long internship. Until then I'm building projects, mainly Cognalytix, a workspace where you upload a spreadsheet and then explore it, query it and train models on it.",
+      text: "I'm joining IndiaMART InterMESH for an international internship in December. Until then I'm a teaching assistant for Machine Learning for Business at Plaksha, and I'm building Cognalytix, a workspace where you upload a spreadsheet and then explore it, query it and train models on it.",
     },
   ],
   facts: [
