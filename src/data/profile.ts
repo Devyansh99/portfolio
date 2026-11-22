@@ -17,7 +17,7 @@ export const profile = {
     },
     {
       label: "Now",
-      text: "I'm joining IndiaMART InterMESH for an internship in December. Until then I'm a teaching assistant for Machine Learning for Business at Plaksha, and I'm building Cognalytix, a workspace where you upload a spreadsheet and then explore it, query it and train models on it.",
+      text: "I'm joining IndiaMART InterMESH for an internship in January. Until then I'm a teaching assistant for Machine Learning for Business at Plaksha, and I'm building Cognalytix, a workspace where you upload a spreadsheet and then explore it, query it and train models on it.",
     },
   ],
   facts: [

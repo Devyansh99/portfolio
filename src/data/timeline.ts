@@ -14,7 +14,7 @@ export const timeline: TimelineEntry[] = [
     kind: "work",
     title: "Intern",
     org: "IndiaMART InterMESH",
-    period: "Joining Dec 2026",
+    period: "Joining Jan 2027",
     summary: "A semester-long internship. Details to come once the work is underway.",
   },
   {
