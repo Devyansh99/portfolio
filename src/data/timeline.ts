@@ -12,10 +12,10 @@ export type TimelineEntry = {
 export const timeline: TimelineEntry[] = [
   {
     kind: "work",
-    title: "International Intern",
+    title: "Intern",
     org: "IndiaMART InterMESH",
     period: "Joining Dec 2026",
-    summary: "A semester-long international internship. Details to come once the work is underway.",
+    summary: "A semester-long internship. Details to come once the work is underway.",
   },
   {
     kind: "role",

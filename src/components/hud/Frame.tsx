@@ -20,7 +20,7 @@ export function Frame({
       {title && (
         <span
           aria-hidden
-          className={`absolute -top-2.5 left-3 z-20 bg-bg px-2 font-mono text-xs ${t}`}
+          className={`absolute -top-2.5 left-3 z-40 bg-bg px-2 font-mono text-xs ${t}`}
         >
           {title}
         </span>
