@@ -242,7 +242,7 @@ export function CreationsTab({
                     })
                     .catch(() => {});
                 }}
-                className="caps min-h-11 border border-line px-3 py-2 text-sm text-ink hover:border-mint hover:text-mint"
+                className="caps min-h-11 border border-mint bg-mint/10 px-3 py-2 text-sm font-bold text-mint hover:bg-mint hover:text-bg"
               >
                 {copied ? "copied" : "copy link"}
               </button>
@@ -250,7 +250,7 @@ export function CreationsTab({
                 type="button"
                 autoFocus
                 onClick={close}
-                className="caps min-h-11 shrink-0 border border-line px-3 py-2 text-sm text-ink hover:border-mint hover:text-mint"
+                className="caps min-h-11 shrink-0 border border-amber bg-amber/10 px-3 py-2 text-sm font-bold text-amber hover:bg-amber hover:text-bg"
               >
                 close · esc
               </button>

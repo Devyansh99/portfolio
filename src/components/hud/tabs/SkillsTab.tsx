@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { projects } from "@/data/projects";
 import { skillGroups, skillUsage } from "@/data/skills";
 import { achievements } from "@/data/timeline";
@@ -22,6 +22,19 @@ const skillCount = skillGroups.reduce((n, g) => n + g.items.length, 0);
 export function SkillsTab() {
   const [skill, setSkill] = useState<string | null>(null);
   const [project, setProject] = useState<string | null>(null);
+  const [cell, setCell] = useState<{
+    s: string;
+    p: string;
+    x: number;
+    y: number;
+  } | null>(null);
+  const headRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const clear = () => setCell(null);
+    document.addEventListener("scroll", clear, true);
+    return () => document.removeEventListener("scroll", clear, true);
+  }, []);
 
   const related = (s: string, p: string) =>
     skill === s || project === p || (skill === null && project === null);
@@ -58,14 +71,17 @@ export function SkillsTab() {
       </dl>
 
       <div
-        className="touch-pan-x touch-pan-y overflow-x-auto overflow-y-hidden overscroll-x-contain py-1 [scrollbar-color:var(--mint-dim)_transparent] [scrollbar-width:thin]"
         onPointerLeave={() => {
           setSkill(null);
           setProject(null);
+          setCell(null);
         }}
       >
-        <div className="min-w-[22rem]">
-          <div className="flex items-end border-b border-line pb-2">
+        <div
+          ref={headRef}
+          className="sticky top-0 z-20 overflow-hidden border-b border-line bg-bg pb-2 pt-2"
+        >
+          <div className="flex min-w-[22rem] items-end">
             <div className="sticky left-0 z-10 w-40 shrink-0 bg-bg text-muted sm:w-52">skill</div>
             {projects.map((p) => (
               <button
@@ -80,14 +96,25 @@ export function SkillsTab() {
                   setSkill(null);
                 }}
                 aria-label={p.title}
-                className={`w-11 shrink-0 text-center text-xs transition-colors sm:w-11 ${
-                  project === p.id ? "text-mint" : "text-muted"
+                className={`w-9 shrink-0 text-center text-xs transition-colors sm:w-11 ${
+                  project === p.id || cell?.p === p.id
+                    ? "font-bold text-mint"
+                    : "text-muted"
                 }`}
               >
                 {codes[p.id]}
               </button>
             ))}
           </div>
+        </div>
+
+        <div
+          className="touch-pan-x touch-pan-y overflow-x-auto overflow-y-hidden overscroll-x-contain py-1 [scrollbar-color:var(--mint-dim)_transparent] [scrollbar-width:thin]"
+          onScroll={(e) => {
+            if (headRef.current) headRef.current.scrollLeft = e.currentTarget.scrollLeft;
+          }}
+        >
+        <div className="min-w-[22rem]">
 
           {skillGroups.map((g) => {
             const rows = g.items.filter((s) => skillUsage[s]);
@@ -130,11 +157,22 @@ export function SkillsTab() {
                     {projects.map((p) => {
                       const used = skillUsage[s].includes(p.id);
                       const hot = used && related(s, p.id);
+                      const here = cell?.s === s && cell.p === p.id;
+                      const crossed = cell !== null && (cell.s === s || cell.p === p.id);
                       return (
                         <span
                           key={p.id}
-                          className="flex w-9 shrink-0 justify-center sm:w-11"
+                          className={`flex w-9 shrink-0 justify-center self-stretch py-1.5 sm:w-11 ${
+                            crossed && !here ? "bg-mint/5" : ""
+                          }`}
                           aria-hidden
+                          onPointerEnter={(e) =>
+                            setCell({ s, p: p.id, x: e.clientX, y: e.clientY })
+                          }
+                          onPointerMove={(e) =>
+                            setCell({ s, p: p.id, x: e.clientX, y: e.clientY })
+                          }
+                          onPointerLeave={() => setCell(null)}
                         >
                           <span
                             className={`size-3.5 rounded-[3px] border transition-colors duration-100 ${
@@ -143,7 +181,7 @@ export function SkillsTab() {
                                   ? "border-mint bg-mint shadow-[0_0_10px_rgba(61,255,176,0.6)]"
                                   : "border-mint/30 bg-mint/20"
                                 : "border-line bg-surface-2"
-                            }`}
+                            } ${here ? "ring-2 ring-amber ring-offset-1 ring-offset-bg" : ""}`}
                           />
                         </span>
                       );
@@ -154,7 +192,28 @@ export function SkillsTab() {
             );
           })}
         </div>
+        </div>
       </div>
+
+      {cell && (
+        <div
+          role="tooltip"
+          className="pointer-events-none fixed z-50 border border-mint bg-bg px-2.5 py-1.5 text-xs shadow-[0_0_12px_rgba(61,255,176,0.35)]"
+          style={{ left: cell.x + 14, top: cell.y - 46 }}
+        >
+          <p className="font-bold text-mint">
+            {codes[cell.p]} · {titleOf(cell.p)}
+          </p>
+          <p className="text-ink">
+            {cell.s}{" "}
+            {skillUsage[cell.s]?.includes(cell.p) ? (
+              <span className="text-amber">✓ used</span>
+            ) : (
+              <span className="text-muted">not used</span>
+            )}
+          </p>
+        </div>
+      )}
 
       <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-1 border-t border-line pt-4 text-xs text-muted sm:grid-cols-4">
         {projects.map((p) => (
