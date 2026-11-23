@@ -39,7 +39,7 @@ const konami = [
 const views: Record<TabId, (active: boolean, sub?: string) => ReactNode> = {
   start: (active) => <StartTab active={active} />,
   logs: () => <LogsTab />,
-  skills: () => <SkillsTab />,
+  skills: (_active, sub) => <SkillsTab graph={sub === "graph"} />,
   creations: (active, sub) => (
     <CreationsTab key={sub ?? "none"} active={active} initialId={sub} />
   ),
@@ -56,7 +56,12 @@ export function Hud() {
   const [hashTab, hashSub] = hash.split("/");
   const current = tabs.find((t) => t.id === hashTab) ?? tabs[0];
   const tab = current.id;
-  const sub = tab === "creations" ? validSub(hashSub) : undefined;
+  const sub =
+    tab === "creations"
+      ? validSub(hashSub)
+      : tab === "skills" && hashSub === "graph"
+        ? "graph"
+        : undefined;
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [rain, setRain] = useState(false);
   const keys = useRef<string[]>([]);

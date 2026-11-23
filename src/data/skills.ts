@@ -30,7 +30,6 @@ export const skillGroups = [
       "Prophet",
       "LangChain",
       "LangGraph",
-      "Gemini",
     ],
   },
   {
@@ -90,7 +89,6 @@ export const skillUsage: Record<string, string[]> = {
   Optuna: ["glioblastoma"],
   YOLO: ["sadakvision"],
   Prophet: ["sadakvision"],
-  Gemini: ["cognalytix", "acadika"],
   Weaviate: ["acadika"],
   "Cisco Packet Tracer": ["digital-dorm-war"],
   FastAPI: ["sadakvision", "cognalytix", "acadika", "adaptivebandit"],

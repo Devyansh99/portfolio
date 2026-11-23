@@ -5,6 +5,7 @@ import { projects } from "@/data/projects";
 import { skillGroups, skillUsage } from "@/data/skills";
 import { achievements } from "@/data/timeline";
 import { projectCodes as codes } from "@/data/codes";
+import { KnowledgeGraph } from "../KnowledgeGraph";
 import { SkillGlyph } from "../SkillGlyph";
 import { TabHeader } from "../TabHeader";
 
@@ -19,9 +20,10 @@ const toolbox = skillGroups
 
 const skillCount = skillGroups.reduce((n, g) => n + g.items.length, 0);
 
-export function SkillsTab() {
+export function SkillsTab({ graph = false }: { graph?: boolean }) {
   const [skill, setSkill] = useState<string | null>(null);
   const [project, setProject] = useState<string | null>(null);
+  const view = graph ? "graph" : "matrix";
   const [cell, setCell] = useState<{
     s: string;
     p: string;
@@ -70,6 +72,31 @@ export function SkillsTab() {
         ))}
       </dl>
 
+      <div className="mb-4 flex items-center gap-2 text-xs" role="tablist" aria-label="Skill view">
+        <span className="text-mint">$</span>
+        {(["matrix", "graph"] as const).map((v) => (
+          <button
+            key={v}
+            type="button"
+            role="tab"
+            aria-selected={view === v}
+            onClick={() => {
+              window.location.hash = v === "graph" ? "skills/graph" : "skills";
+            }}
+            className={`border px-3 py-1 transition-colors ${
+              view === v
+                ? "border-mint bg-mint/10 font-bold text-mint"
+                : "border-line text-muted hover:border-mint/60 hover:text-ink"
+            }`}
+          >
+            [{v}]
+          </button>
+        ))}
+      </div>
+
+      {view === "graph" ? (
+        <KnowledgeGraph />
+      ) : (
       <div
         onPointerLeave={() => {
           setSkill(null);
@@ -194,6 +221,7 @@ export function SkillsTab() {
         </div>
         </div>
       </div>
+      )}
 
       {cell && (
         <div

@@ -343,6 +343,7 @@ export const commandGroups: { title: string; items: CommandDoc[] }[] = [
       { cmd: "skills", run: "skills", desc: "list skill groups" },
       { cmd: "skills --used-in <project>", run: "skills --used-in higan", desc: "skills behind one project" },
       { cmd: "skills <skill>", run: "skills python", desc: "projects that use a skill" },
+      { cmd: "/graph", run: "/graph", desc: "open the skills knowledge graph" },
     ],
   },
   {
@@ -393,6 +394,7 @@ export const commandNames = [
   "find",
   "which",
   "skills",
+  "graph",
   "git",
   "open",
   "link",
@@ -416,7 +418,8 @@ export const commandNames = [
 const flat = commandGroups.flatMap((g) => g.items);
 
 function helpFor(name: string): ShellLine[] {
-  const hits = flat.filter((c) => c.cmd.split(" ")[0] === name);
+  const bare = (s: string) => s.replace(/^\//, "");
+  const hits = flat.filter((c) => bare(c.cmd.split(" ")[0]) === bare(name));
   if (hits.length === 0) return [err(`help: no help for '${name}'`)];
   return hits.flatMap((c) => [
     text(c.cmd, "mint"),
@@ -645,6 +648,13 @@ export function run(raw: string, ctx: ShellContext): ShellResult {
 
     case "skills":
       return { lines: skillQuery(arg) };
+
+    case "graph":
+    case "/graph":
+      return {
+        lines: [text("opening the knowledge graph...", "muted")],
+        action: { type: "go", tab: "skills", sub: "graph" },
+      };
 
     case "git": {
       const sub = rest[0]?.toLowerCase();

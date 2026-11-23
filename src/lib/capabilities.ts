@@ -25,23 +25,3 @@ export function useDeviceTier(): "high" | "low" {
     () => "low",
   );
 }
-
-let webglSupported: boolean | undefined;
-
-function detectWebGL2(): boolean {
-  if (webglSupported === undefined) {
-    try {
-      const canvas = document.createElement("canvas");
-      webglSupported = Boolean(canvas.getContext("webgl2"));
-    } catch {
-      webglSupported = false;
-    }
-  }
-  return webglSupported;
-}
-
-const subscribeNever = () => () => {};
-
-export function useWebGL2(): boolean {
-  return useSyncExternalStore(subscribeNever, detectWebGL2, () => false);
-}
